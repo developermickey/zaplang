@@ -27,7 +27,18 @@
     "zap",
     "zp"
   ],
-  "author": "Mukesh Pathak <arora.tanay72@gmail.com>",
+  "author": {
+    "name": "Mukesh Pathak",
+    "email": "arora.tanay72@gmail.com",
+    "url": "https://github.com/developermickey"
+  },
+  "contributors": [
+    {
+      "name": "Mukesh Pathak",
+      "email": "arora.tanay72@gmail.com",
+      "url": "https://github.com/developermickey"
+    }
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",

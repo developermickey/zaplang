@@ -7,6 +7,16 @@ Created by **Mukesh Pathak** — Founder, MurphTech Software Solutions
 
 ---
 
+## Contributors
+
+| Name | Role | GitHub |
+|------|------|--------|
+| Mukesh Pathak | Creator & Lead Developer | [@developermickey](https://github.com/developermickey) |
+
+> Want to be listed here? [Contribute to Zap](CONTRIBUTING.md) and open a Pull Request!
+
+---
+
 ## Install
 
 ```bash
