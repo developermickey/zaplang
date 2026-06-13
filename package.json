@@ -1,14 +1,44 @@
 {
-  "name": "zap-lang",
+  "name": "zaplang",
   "version": "1.0.0",
-  "description": "Zap - A simple, fast language for building full-stack web apps",
+  "description": "Zap - A simple, fast programming language for building full-stack web apps. Files use .zap or .zp extension.",
   "main": "dist/cli.js",
   "bin": {
-    "zap": "./dist/cli.js"
+    "zap": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/cli.ts"
+  },
+  "files": [
+    "dist/",
+    "examples/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "programming-language",
+    "language",
+    "transpiler",
+    "web",
+    "fullstack",
+    "simple",
+    "fast",
+    "zap",
+    "zp"
+  ],
+  "author": "Mukesh Pathak <arora.tanay72@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/developermickey/zaplang.git"
+  },
+  "homepage": "https://github.com/developermickey/zaplang#readme",
+  "bugs": {
+    "url": "https://github.com/developermickey/zaplang/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
