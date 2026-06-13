@@ -1,0 +1,20 @@
+{
+  "projectName": "zaplang",
+  "projectOwner": "developermickey",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": ["README.md"],
+  "imageSize": 100,
+  "commit": true,
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "contributors": [
+    {
+      "login": "developermickey",
+      "name": "Mukesh Pathak",
+      "avatar_url": "https://avatars.githubusercontent.com/developermickey",
+      "profile": "https://github.com/developermickey",
+      "contributions": ["code", "doc", "ideas", "maintenance", "infra"]
+    }
+  ]
+}

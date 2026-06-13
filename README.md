@@ -9,11 +9,30 @@ Created by **Mukesh Pathak** — Founder, MurphTech Software Solutions
 
 ## Contributors
 
-| Name | Role | GitHub |
-|------|------|--------|
-| Mukesh Pathak | Creator & Lead Developer | [@developermickey](https://github.com/developermickey) |
+Thanks to these wonderful people who built Zap:
 
-> Want to be listed here? [Contribute to Zap](CONTRIBUTING.md) and open a Pull Request!
+<!-- ALL-CONTRIBUTORS-LIST:START -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/developermickey">
+          <img src="https://avatars.githubusercontent.com/developermickey?v=4" width="100px;" alt="Mukesh Pathak"/><br/>
+          <sub><b>Mukesh Pathak</b></sub>
+        </a><br/>
+        <a title="Code">💻</a>
+        <a title="Documentation">📖</a>
+        <a title="Ideas">🤔</a>
+        <a title="Maintenance">🚧</a>
+        <a title="Infrastructure">🏗️</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+> Want your avatar here? Comment on any issue:
+> `@all-contributors please add @YOUR_USERNAME for code`
 
 ---
 
