@@ -257,8 +257,8 @@ export class Parser {
       alias = this.advance().value
     }
 
-    // from "path"
-    if (this.check("IDENT") && this.peek().value === "from") this.advance()
+    // from "path" — FROM is a keyword token
+    if (this.check("FROM") || (this.check("IDENT") && this.peek().value === "from")) this.advance()
     const path = this.expect("STRING").value
     return { kind: "Import", path, names, alias }
   }

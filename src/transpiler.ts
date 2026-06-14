@@ -1,4 +1,18 @@
 import { Node, Route } from "./parser"
+import * as path from "path"
+
+// ── Stdlib resolver ──────────────────────────────────────────────────
+const STDLIB_MODULES = new Set(["fs","http","os","math","time","crypto","str","arr"])
+const STDLIB_DIR = path.join(__dirname, "..", "stdlib")
+
+function resolveImport(importPath: string): string {
+  if (importPath.startsWith("zap:")) {
+    const mod = importPath.slice(4)
+    if (STDLIB_MODULES.has(mod)) return path.join(STDLIB_DIR, `${mod}.js`)
+    throw new Error(`[Zap] Unknown stdlib module: zap:${mod}. Available: ${[...STDLIB_MODULES].join(", ")}`)
+  }
+  return importPath
+}
 
 // ── Built-in function map ────────────────────────────────────────────
 const BUILTINS: Record<string, (...a: string[]) => string> = {
@@ -204,13 +218,15 @@ function stmt(node: Node, indent: number): string {
     }
 
     case "Import": {
+      // Resolve zap: stdlib imports to the stdlib directory
+      const resolvedPath = resolveImport(node.path)
       if (node.names.length > 0) {
-        return `${pad}const { ${node.names.join(", ")} } = require(${JSON.stringify(node.path)});`
+        return `${pad}const { ${node.names.join(", ")} } = require(${JSON.stringify(resolvedPath)});`
       }
       if (node.alias) {
-        return `${pad}const ${node.alias} = require(${JSON.stringify(node.path)});`
+        return `${pad}const ${node.alias} = require(${JSON.stringify(resolvedPath)});`
       }
-      return `${pad}require(${JSON.stringify(node.path)});`
+      return `${pad}require(${JSON.stringify(resolvedPath)});`
     }
 
     case "Server":

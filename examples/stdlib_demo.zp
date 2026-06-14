@@ -1,0 +1,87 @@
+// ⚡ Zap Standard Library Demo
+
+import fs     from "zap:fs"
+import os     from "zap:os"
+import math   from "zap:math"
+import time   from "zap:time"
+import crypto from "zap:crypto"
+import str    from "zap:str"
+import arr    from "zap:arr"
+
+// ── os ─────────────────────────────────────────────────────────────
+print("== OS ==")
+print(`Platform: {os.platform()}`)
+print(`Hostname: {os.hostname()}`)
+print(`CPUs: {os.cpuCount()}`)
+print(`Free RAM: {os.freeMem()} MB`)
+print(`Home: {os.homedir()}`)
+
+// ── math ───────────────────────────────────────────────────────────
+print("== MATH ==")
+print(`PI = {math.PI}`)
+print(`sqrt(256) = {math.sqrt(256)}`)
+print(`isPrime(97) = {math.isPrime(97)}`)
+print(`factorial(7) = {math.factorial(7)}`)
+print(`clamp(150, 0, 100) = {math.clamp(150, 0, 100)}`)
+print(`gcd(48, 18) = {math.gcd(48, 18)}`)
+
+let nums = [5, 2, 8, 1, 9, 3, 7]
+print(`sum = {math.sum(nums)}`)
+print(`avg = {math.avg(nums)}`)
+print(`median = {math.median(nums)}`)
+
+// ── time ───────────────────────────────────────────────────────────
+print("== TIME ==")
+print(`Now: {time.date()}`)
+print(`Year: {time.year()}`)
+print(`Formatted: {time.format(time.now(), "YYYY-MM-DD")}`)
+
+// ── crypto ─────────────────────────────────────────────────────────
+print("== CRYPTO ==")
+print(`UUID: {crypto.uuid()}`)
+print(`SHA256("hello"): {crypto.sha256("hello")}`)
+print(`Random token: {crypto.randomToken(16)}`)
+print(`Base64("Zap!"): {crypto.base64Encode("Zap!")}`)
+
+// ── str ────────────────────────────────────────────────────────────
+print("== STRING ==")
+print(`upper: {str.upper("hello zap")}`)
+print(`titleCase: {str.titleCase("hello zap world")}`)
+print(`camelCase: {str.camelCase("hello-zap-world")}`)
+print(`snakeCase: {str.snakeCase("helloZapWorld")}`)
+print(`reverse: {str.reverse("Zap!")}`)
+print(`isEmail: {str.isEmail("mukesh@zap.dev")}`)
+print(`words: {str.words("  hello   zap  world  ")}`)
+
+// ── arr ────────────────────────────────────────────────────────────
+print("== ARRAY ==")
+let fruits = ["banana", "apple", "mango", "grape", "kiwi"]
+print(`sorted: {arr.sortAsc(fruits)}`)
+print(`unique: {arr.unique([1,2,2,3,3,3,4])}`)
+print(`chunk(3): {arr.chunk([1,2,3,4,5,6,7], 3)}`)
+print(`sum: {arr.sum([10,20,30,40])}`)
+print(`avg: {arr.avg([10,20,30,40])}`)
+print(`shuffle: {arr.shuffle([1,2,3,4,5])}`)
+print(`pick random: {arr.pick(fruits)}`)
+
+// ── fs ─────────────────────────────────────────────────────────────
+print("== FILE SYSTEM ==")
+fs.writeFile("/tmp/zap_test.txt", "Hello from Zap stdlib!\nLine 2\nLine 3")
+print(`exists: {fs.exists("/tmp/zap_test.txt")}`)
+print(`size: {fs.size("/tmp/zap_test.txt")} bytes`)
+
+let content = fs.readFile("/tmp/zap_test.txt")
+print(`content: {content}`)
+
+let lines = fs.readLines("/tmp/zap_test.txt")
+print(`lines: {lines}`)
+
+fs.writeJSON("/tmp/zap_data.json", { name: "Mukesh", lang: "Zap", version: 2 })
+let data = fs.readJSON("/tmp/zap_data.json")
+print(`JSON name: {data.name}, version: {data.version}`)
+
+fs.deleteFile("/tmp/zap_test.txt")
+fs.deleteFile("/tmp/zap_data.json")
+print("Files cleaned up.")
+
+print("⚡ All stdlib modules working!")
