@@ -1,0 +1,69 @@
+{
+  "name": "Zap Dark",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#0d1117",
+    "editor.foreground": "#e6edf3",
+    "activityBar.background": "#010409",
+    "sideBar.background": "#010409",
+    "statusBar.background": "#f5a623",
+    "statusBar.foreground": "#000000"
+  },
+  "tokenColors": [
+    {
+      "name": "Keywords",
+      "scope": ["keyword.control.zap", "storage.type.zap"],
+      "settings": { "foreground": "#ff7b72", "fontStyle": "bold" }
+    },
+    {
+      "name": "Functions",
+      "scope": ["entity.name.function.zap", "entity.name.function.call.zap"],
+      "settings": { "foreground": "#d2a8ff" }
+    },
+    {
+      "name": "Builtins",
+      "scope": ["support.function.builtin.zap"],
+      "settings": { "foreground": "#79c0ff" }
+    },
+    {
+      "name": "Strings",
+      "scope": ["string.quoted.double.zap", "string.quoted.single.zap", "string.template.zap"],
+      "settings": { "foreground": "#a5d6ff" }
+    },
+    {
+      "name": "Template expression",
+      "scope": ["meta.template.expression.zap"],
+      "settings": { "foreground": "#ffa657" }
+    },
+    {
+      "name": "Numbers",
+      "scope": ["constant.numeric.zap"],
+      "settings": { "foreground": "#f5a623" }
+    },
+    {
+      "name": "Booleans / null",
+      "scope": ["constant.language.boolean.zap", "constant.language.null.zap"],
+      "settings": { "foreground": "#ff7b72" }
+    },
+    {
+      "name": "Comments",
+      "scope": ["comment.line.zap", "comment.block.zap"],
+      "settings": { "foreground": "#8b949e", "fontStyle": "italic" }
+    },
+    {
+      "name": "Operators",
+      "scope": ["keyword.operator.zap"],
+      "settings": { "foreground": "#ff7b72" }
+    },
+    {
+      "name": "HTTP methods",
+      "scope": ["keyword.other.http-method.zap", "keyword.other.server.zap"],
+      "settings": { "foreground": "#3fb950", "fontStyle": "bold" }
+    },
+    {
+      "name": "Route strings",
+      "scope": ["string.quoted.route.zap"],
+      "settings": { "foreground": "#a5d6ff", "fontStyle": "underline" }
+    }
+  ]
+}
