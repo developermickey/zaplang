@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zap — Fast, Simple Programming Language</title>
+  <meta name="description" content="Zap is a simple, fast programming language for building full-stack web apps. Files use .zap or .zp extension." />
+  <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/developermickey/zaplang/main/assets/icons/zap.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <img src="https://raw.githubusercontent.com/developermickey/zaplang/main/assets/icons/zap.svg" width="32" height="32" alt="Zap" />
+        <span>Zap</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="examples.html">Examples</a></li>
+        <li><a href="stdlib.html">Stdlib</a></li>
+        <li><a href="https://github.com/developermickey/zaplang" target="_blank">GitHub</a></li>
+        <li><a href="https://www.npmjs.com/package/zap-language" target="_blank" class="btn-nav">npm</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">⚡ v1.1.0 now on npm</div>
+    <h1>Build fast.<br/>Code simple.<br/><span class="gradient">Ship with Zap.</span></h1>
+    <p class="hero-sub">A modern programming language that compiles to JavaScript <em>and</em> native binaries. Simple like Python, fast like Go, built for full-stack web apps.</p>
+
+    <div class="install-box">
+      <code>npm install -g zap-language</code>
+      <button onclick="navigator.clipboard.writeText('npm install -g zap-language')" title="Copy">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      </button>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="docs.html" class="btn-primary">Get Started →</a>
+      <a href="examples.html" class="btn-secondary">See Examples</a>
+    </div>
+  </section>
+
+  <!-- CODE DEMO -->
+  <section class="demo">
+    <div class="demo-inner">
+      <div class="demo-tabs">
+        <button class="tab active" onclick="showTab('hello')">Hello World</button>
+        <button class="tab" onclick="showTab('server')">Web Server</button>
+        <button class="tab" onclick="showTab('native')">Native Binary</button>
+      </div>
+
+      <div class="code-block" id="tab-hello">
+<pre><code><span class="c">// hello.zap</span>
+<span class="kw">let</span> <span class="v">name</span> = <span class="s">"World"</span>
+<span class="fn">print</span>(<span class="t">`Hello, {name}!`</span>)
+
+<span class="kw">fn</span> <span class="fn">greet</span>(person) {
+  <span class="kw">return</span> <span class="t">`Welcome, {person}!`</span>
+}
+
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="s">"Mukesh"</span>))
+
+<span class="c">// Loop from 1 to 5</span>
+<span class="kw">loop</span> <span class="v">i</span> <span class="kw">from</span> <span class="n">1</span> <span class="kw">to</span> <span class="n">6</span> {
+  <span class="fn">print</span>(<span class="t">`Count: {i}`</span>)
+}</code></pre>
+        <div class="run-cmd">$ zap run hello.zap</div>
+      </div>
+
+      <div class="code-block hidden" id="tab-server">
+<pre><code><span class="c">// server.zap</span>
+<span class="kw">server</span> <span class="kw">on</span> <span class="n">3000</span> {
+
+  <span class="kw">get</span> <span class="s">"/"</span> {
+    <span class="kw">return</span> <span class="s">"Welcome to Zap!"</span>
+  }
+
+  <span class="kw">get</span> <span class="s">"/hello/:name"</span> {
+    <span class="kw">return</span> <span class="t">`Hello, {req.params.name}!`</span>
+  }
+
+  <span class="kw">post</span> <span class="s">"/api/data"</span> {
+    <span class="kw">let</span> <span class="v">body</span> = req.body
+    <span class="kw">return</span> { ok: <span class="b">true</span>, data: body }
+  }
+
+}</code></pre>
+        <div class="run-cmd">$ zap run server.zap</div>
+      </div>
+
+      <div class="code-block hidden" id="tab-native">
+<pre><code><span class="c">// native.zp — compiles to a real binary</span>
+<span class="kw">fn</span> <span class="fn">fibonacci</span>(n) {
+  <span class="kw">if</span> (n <= <span class="n">1</span>) { <span class="kw">return</span> n }
+  <span class="kw">return</span> <span class="fn">fibonacci</span>(n - <span class="n">1</span>) + <span class="fn">fibonacci</span>(n - <span class="n">2</span>)
+}
+
+<span class="kw">let</span> <span class="v">nums</span> = [<span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>, <span class="n">40</span>, <span class="n">50</span>]
+<span class="fn">print</span>(nums.reverse())
+<span class="fn">print</span>(<span class="fn">fibonacci</span>(<span class="n">10</span>))</code></pre>
+        <div class="run-cmd">$ zap build native.zp --native -o myapp</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <h2>Why Zap?</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Blazing Fast</h3>
+        <p>Compiles to optimized C99 for native speed, or runs on Node.js for instant startup.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Simple Syntax</h3>
+        <p>Reads like plain English. No semicolons, no boilerplate — just write logic.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Full-Stack Ready</h3>
+        <p>Built-in <code>server</code> block handles HTTP routes. Build APIs in minutes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Rich Stdlib</h3>
+        <p>8 built-in modules: fs, http, os, math, time, crypto, str, arr — batteries included.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure by Default</h3>
+        <p>Crypto module built-in. UUID, hashing, HMAC, and safe random — no extra packages.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛠️</div>
+        <h3>VS Code Extension</h3>
+        <p>Syntax highlighting, snippets, hover docs, and auto-complete for .zap and .zp files.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK START -->
+  <section class="quickstart">
+    <h2>Quick Start</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Install</h3>
+          <div class="code-line"><code>npm install -g zap-language</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Create a file</h3>
+          <div class="code-line"><code>echo 'print("Hello Zap!")' > hello.zap</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Run it</h3>
+          <div class="code-line"><code>zap run hello.zap</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Build native binary</h3>
+          <div class="code-line"><code>zap build hello.zap --native</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="https://raw.githubusercontent.com/developermickey/zaplang/main/assets/icons/zap.svg" width="28" height="28" alt="Zap" />
+        <span>Zap Language</span>
+      </div>
+      <p>Created by <a href="https://github.com/developermickey" target="_blank">Mukesh Pathak</a> · MurphTech Software Solutions</p>
+      <div class="footer-links">
+        <a href="https://github.com/developermickey/zaplang" target="_blank">GitHub</a>
+        <a href="https://www.npmjs.com/package/zap-language" target="_blank">npm</a>
+        <a href="docs.html">Docs</a>
+        <a href="examples.html">Examples</a>
+      </div>
+      <p class="footer-copy">MIT License · © 2024 Mukesh Pathak</p>
+    </div>
+  </footer>
+
+  <script>
+    function showTab(name) {
+      document.querySelectorAll('.code-block').forEach(el => el.classList.add('hidden'))
+      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'))
+      document.getElementById('tab-' + name).classList.remove('hidden')
+      event.target.classList.add('active')
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docs — Zap Language</title>
+  <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/developermickey/zaplang/main/assets/icons/zap.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <img src="https://raw.githubusercontent.com/developermickey/zaplang/main/assets/icons/zap.svg" width="32" height="32" alt="Zap" />
+        <span>Zap</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="docs.html" style="color:#e6edf3">Docs</a></li>
+        <li><a href="examples.html">Examples</a></li>
+        <li><a href="stdlib.html">Stdlib</a></li>
+        <li><a href="https://github.com/developermickey/zaplang" target="_blank">GitHub</a></li>
+        <li><a href="https://www.npmjs.com/package/zap-language" target="_blank" class="btn-nav">npm</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <h1>Documentation</h1>
+    <p>Everything you need to know about the Zap programming language.</p>
+  </div>
+
+  <div class="page-body">
+    <aside class="sidebar">
+      <h4>Getting Started</h4>
+      <a href="#install">Installation</a>
+      <a href="#cli">CLI Commands</a>
+      <a href="#hello">Hello World</a>
+
+      <h4>Language</h4>
+      <a href="#variables">Variables</a>
+      <a href="#functions">Functions</a>
+      <a href="#control">Control Flow</a>
+      <a href="#loops">Loops</a>
+      <a href="#arrays">Arrays</a>
+      <a href="#objects">Objects</a>
+      <a href="#strings">Strings & Templates</a>
+      <a href="#errors">Error Handling</a>
+      <a href="#imports">Imports</a>
+
+      <h4>Web</h4>
+      <a href="#server">Server Block</a>
+
+      <h4>Native</h4>
+      <a href="#native">Native Compilation</a>
+    </aside>
+
+    <div class="doc-content">
+      <h2 id="install">Installation</h2>
+      <p>Zap requires Node.js 16+ for the JS runtime. For native compilation, clang or gcc must be installed.</p>
+      <pre><code>npm install -g zap-language</code></pre>
+      <p>Verify installation:</p>
+      <pre><code>zap --version</code></pre>
+
+      <h2 id="cli">CLI Commands</h2>
+      <h3>zap run</h3>
+      <p>Transpile and run a .zap file using Node.js.</p>
+      <pre><code>zap run hello.zap</code></pre>
+
+      <h3>zap build</h3>
+      <p>Compile to JavaScript.</p>
+      <pre><code>zap build hello.zap</code></pre>
+
+      <h3>zap build --native</h3>
+      <p>Compile to a native binary via C99 + clang/gcc.</p>
+      <pre><code>zap build hello.zap --native
+zap build hello.zap --native -o myapp</code></pre>
+
+      <h3>zap emit-c</h3>
+      <p>Emit the generated C code (for inspection/debugging).</p>
+      <pre><code>zap emit-c hello.zap</code></pre>
+
+      <h3>zap new</h3>
+      <p>Scaffold a new Zap project.</p>
+      <pre><code>zap new myproject</code></pre>
+
+      <h2 id="hello">Hello World</h2>
+      <pre><code><span class="c">// hello.zap</span>
+<span class="fn">print</span>(<span class="s">"Hello, World!"</span>)</code></pre>
+
+      <h2 id="variables">Variables</h2>
+      <p>Declare variables with <code>let</code>. Zap is dynamically typed — no type annotations needed.</p>
+      <pre><code><span class="kw">let</span> <span class="v">name</span> = <span class="s">"Zap"</span>
+<span class="kw">let</span> <span class="v">version</span> = <span class="n">1.1</span>
+<span class="kw">let</span> <span class="v">active</span> = <span class="b">true</span>
+<span class="kw">let</span> <span class="v">nothing</span> = <span class="b">null</span>
+
+<span class="c">// Reassign</span>
+version = <span class="n">2.0</span>
+
+<span class="c">// Compound assignment</span>
+version += <span class="n">0.1</span>
+version -= <span class="n">0.1</span>
+version *= <span class="n">2</span>
+version /= <span class="n">2</span></code></pre>
+
+      <h2 id="functions">Functions</h2>
+      <pre><code><span class="kw">fn</span> <span class="fn">add</span>(a, b) {
+  <span class="kw">return</span> a + b
+}
+
+<span class="fn">print</span>(<span class="fn">add</span>(<span class="n">2</span>, <span class="n">3</span>))  <span class="c">// 5</span>
+
+<span class="c">// Anonymous function</span>
+<span class="kw">let</span> <span class="v">double</span> = <span class="kw">fn</span>(x) { <span class="kw">return</span> x * <span class="n">2</span> }
+<span class="fn">print</span>(<span class="fn">double</span>(<span class="n">5</span>))   <span class="c">// 10</span>
+
+<span class="c">// Ternary expression</span>
+<span class="kw">let</span> <span class="v">max</span> = <span class="v">a</span> > <span class="v">b</span> ? <span class="v">a</span> : <span class="v">b</span></code></pre>
+
+      <h2 id="control">Control Flow</h2>
+      <pre><code><span class="kw">let</span> <span class="v">score</span> = <span class="n">85</span>
+
+<span class="kw">if</span> (score >= <span class="n">90</span>) {
+  <span class="fn">print</span>(<span class="s">"A"</span>)
+} else if (score >= <span class="n">80</span>) {
+  <span class="fn">print</span>(<span class="s">"B"</span>)
+} else {
+  <span class="fn">print</span>(<span class="s">"C"</span>)
+}</code></pre>
+
+      <h2 id="loops">Loops</h2>
+      <pre><code><span class="c">// Range loop</span>
+<span class="kw">loop</span> <span class="v">i</span> <span class="kw">from</span> <span class="n">0</span> <span class="kw">to</span> <span class="n">5</span> {
+  <span class="fn">print</span>(i)
+}
+
+<span class="c">// Loop with step</span>
+<span class="kw">loop</span> <span class="v">i</span> <span class="kw">from</span> <span class="n">0</span> <span class="kw">to</span> <span class="n">10</span> <span class="kw">step</span> <span class="n">2</span> {
+  <span class="fn">print</span>(i)  <span class="c">// 0 2 4 6 8</span>
+}
+
+<span class="c">// While loop</span>
+<span class="kw">let</span> <span class="v">n</span> = <span class="n">0</span>
+<span class="kw">while</span> (n < <span class="n">5</span>) {
+  <span class="fn">print</span>(n)
+  n++
+}
+
+<span class="c">// break / continue</span>
+<span class="kw">loop</span> <span class="v">i</span> <span class="kw">from</span> <span class="n">0</span> <span class="kw">to</span> <span class="n">10</span> {
+  <span class="kw">if</span> (i == <span class="n">5</span>) { <span class="kw">break</span> }
+  <span class="kw">if</span> (i % <span class="n">2</span> == <span class="n">0</span>) { <span class="kw">continue</span> }
+  <span class="fn">print</span>(i)
+}</code></pre>
+
+      <h2 id="arrays">Arrays</h2>
+      <pre><code><span class="kw">let</span> <span class="v">nums</span> = [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">4</span>, <span class="n">5</span>]
+<span class="kw">let</span> <span class="v">words</span> = [<span class="s">"hello"</span>, <span class="s">"world"</span>]
+
+<span class="c">// Access</span>
+<span class="fn">print</span>(nums[<span class="n">0</span>])       <span class="c">// 1</span>
+
+<span class="c">// Methods</span>
+nums.push(<span class="n">6</span>)
+<span class="kw">let</span> <span class="v">last</span> = nums.pop()
+<span class="fn">print</span>(nums.len())
+<span class="fn">print</span>(nums.reverse())
+<span class="fn">print</span>(nums.sort())
+<span class="fn">print</span>(nums.includes(<span class="n">3</span>))   <span class="c">// true</span>
+<span class="fn">print</span>(nums.indexOf(<span class="n">3</span>))    <span class="c">// 2</span>
+<span class="fn">print</span>(nums.join(<span class="s">","</span>))      <span class="c">// 1,2,3,4,5</span>
+<span class="fn">print</span>(nums.slice(<span class="n">1</span>, <span class="n">3</span>))   <span class="c">// [2, 3]</span>
+
+<span class="c">// Range</span>
+<span class="kw">let</span> <span class="v">r</span> = <span class="fn">range</span>(<span class="n">1</span>, <span class="n">6</span>)       <span class="c">// [1,2,3,4,5]</span></code></pre>
+
+      <h2 id="objects">Objects</h2>
+      <pre><code><span class="kw">let</span> <span class="v">person</span> = {
+  name: <span class="s">"Mukesh"</span>,
+  age: <span class="n">25</span>,
+  active: <span class="b">true</span>
+}
+
+<span class="fn">print</span>(person.name)   <span class="c">// Mukesh</span>
+person.age = <span class="n">26</span></code></pre>
+
+      <h2 id="strings">Strings & Templates</h2>
+      <pre><code><span class="kw">let</span> <span class="v">name</span> = <span class="s">"Zap"</span>
+
+<span class="c">// Template string (backtick)</span>
+<span class="kw">let</span> <span class="v">msg</span> = <span class="t">`Hello, {name}! Version {1 + 1}`</span>
+<span class="fn">print</span>(msg)   <span class="c">// Hello, Zap! Version 2</span>
+
+<span class="c">// Built-in string functions</span>
+<span class="fn">print</span>(<span class="fn">upper</span>(<span class="s">"hello"</span>))     <span class="c">// HELLO</span>
+<span class="fn">print</span>(<span class="fn">lower</span>(<span class="s">"WORLD"</span>))     <span class="c">// world</span>
+<span class="fn">print</span>(<span class="fn">len</span>(<span class="s">"hello"</span>))       <span class="c">// 5</span>
+<span class="fn">print</span>(<span class="fn">trim</span>(<span class="s">"  hi  "</span>))     <span class="c">// hi</span></code></pre>
+
+      <h2 id="errors">Error Handling</h2>
+      <pre><code><span class="kw">try</span> {
+  <span class="kw">let</span> <span class="v">data</span> = riskyOperation()
+  <span class="fn">print</span>(data)
+} <span class="kw">catch</span> (err) {
+  <span class="fn">print</span>(<span class="t">`Error: {err}`</span>)
+} <span class="kw">finally</span> {
+  <span class="fn">print</span>(<span class="s">"Done"</span>)
+}</code></pre>
+
+      <h2 id="imports">Imports</h2>
+      <pre><code><span class="c">// Import from Zap stdlib</span>
+<span class="kw">import</span> math <span class="kw">from</span> <span class="s">"zap:math"</span>
+<span class="kw">import</span> fs   <span class="kw">from</span> <span class="s">"zap:fs"</span>
+<span class="kw">import</span> time <span class="kw">from</span> <span class="s">"zap:time"</span>
+
+<span class="fn">print</span>(math.PI)
+<span class="fn">print</span>(math.sqrt(<span class="n">144</span>))   <span class="c">// 12</span>
+<span class="fn">print</span>(time.now())</code></pre>
+
+      <h2 id="server">Server Block</h2>
+      <pre><code><span class="kw">server</span> <span class="kw">on</span> <span class="n">3000</span> {
+
+  <span class="kw">get</span> <span class="s">"/"</span> {
+    <span class="kw">return</span> <span class="s">"Hello from Zap!"</span>
+  }
+
+  <span class="kw">get</span> <span class="s">"/user/:id"</span> {
+    <span class="kw">return</span> { id: req.params.id }
+  }
+
+  <span class="kw">post</span> <span class="s">"/api/echo"</span> {
+    <span class="kw">return</span> req.body
+  }
+
+  <span class="kw">put</span>    <span class="s">"/api/update"</span> { <span class="kw">return</span> { ok: <span class="b">true</span> } }
+  <span class="kw">delete</span> <span class="s">"/api/item"</span>   { <span class="kw">return</span> { deleted: <span class="b">true</span> } }
+
+}</code></pre>
+
+      <h2 id="native">Native Compilation</h2>
+      <p>Zap can compile to a native binary via C99. Requires <code>clang</code> or <code>gcc</code>.</p>
+      <pre><code><span class="c"># Compile to binary</span>
+zap build app.zap --native
+
+<span class="c"># Custom output name</span>
+zap build app.zap --native -o myapp
+
+<span class="c"># Run the binary</span>
+./myapp</code></pre>
+      <p>Native mode supports: numbers, strings, booleans, arrays, functions, loops, conditionals, and most built-ins.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="https://raw.githubusercontent.com/developermickey/zaplang/main/assets/icons/zap.svg" width="28" height="28" alt="Zap" />
+        <span>Zap Language</span>
+      </div>
+      <p>Created by <a href="https://github.com/developermickey" target="_blank">Mukesh Pathak</a> · MurphTech Software Solutions</p>
+      <div class="footer-links">
+        <a href="https://github.com/developermickey/zaplang" target="_blank">GitHub</a>
+        <a href="https://www.npmjs.com/package/zap-language" target="_blank">npm</a>
+        <a href="docs.html">Docs</a>
+        <a href="examples.html">Examples</a>
+      </div>
+      <p class="footer-copy">MIT License · © 2024 Mukesh Pathak</p>
+    </div>
+  </footer>
+</body>
+</html>
