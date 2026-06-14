@@ -44,21 +44,28 @@ static int       zap_str_eq(ZapString a, ZapString b) { return strcmp(a.data, b.
 /* ──────────────────────────────────────────────
    ZapValue — tagged union (number | string | bool | array | null)
 ─────────────────────────────────────────────── */
-typedef enum { ZAP_NULL=0, ZAP_NUM, ZAP_STR, ZAP_BOOL, ZAP_ARR } ZapTag;
+typedef enum { ZAP_NULL=0, ZAP_NUM, ZAP_STR, ZAP_BOOL, ZAP_ARR, ZAP_OBJ } ZapTag;
 typedef struct ZapValue ZapValue;
 typedef struct {
   ZapValue *data;
   size_t    len;
   size_t    cap;
 } ZapArray;
+typedef struct {
+  char    **keys;
+  ZapValue *vals;
+  size_t    len;
+  size_t    cap;
+} ZapObject;
 
 struct ZapValue {
   ZapTag tag;
   union {
-    double    num;
-    ZapString str;
-    int       boolean;
-    ZapArray *arr;
+    double     num;
+    ZapString  str;
+    int        boolean;
+    ZapArray  *arr;
+    ZapObject *obj;
   };
 };
 
@@ -66,6 +73,53 @@ static ZapValue zap_val_num(double n)    { ZapValue v; v.tag=ZAP_NUM;  v.num=n; 
 static ZapValue zap_val_str(ZapString s) { ZapValue v; v.tag=ZAP_STR;  v.str=s;     return v; }
 static ZapValue zap_val_bool(int b)      { ZapValue v; v.tag=ZAP_BOOL; v.boolean=b; return v; }
 static ZapValue zap_val_null(void)       { ZapValue v; v.tag=ZAP_NULL; v.num=0;     return v; }
+static ZapValue zap_val_obj(ZapObject *o){ ZapValue v; v.tag=ZAP_OBJ;  v.obj=o;     return v; }
+
+/* ──────────────────────────────────────────────
+   ZapObject operations
+─────────────────────────────────────────────── */
+static ZapArray *zap_arr_new(void);
+static void zap_arr_push(ZapArray *a, ZapValue v);
+
+static ZapObject *zap_obj_new(void) {
+  ZapObject *o = (ZapObject*)malloc(sizeof(ZapObject));
+  o->cap = 8; o->len = 0;
+  o->keys = (char**)malloc(o->cap * sizeof(char*));
+  o->vals = (ZapValue*)malloc(o->cap * sizeof(ZapValue));
+  return o;
+}
+static void zap_obj_set(ZapObject *o, const char *key, ZapValue val) {
+  for (size_t i = 0; i < o->len; i++) {
+    if (strcmp(o->keys[i], key) == 0) { o->vals[i] = val; return; }
+  }
+  if (o->len == o->cap) {
+    o->cap *= 2;
+    o->keys = (char**)realloc(o->keys, o->cap * sizeof(char*));
+    o->vals = (ZapValue*)realloc(o->vals, o->cap * sizeof(ZapValue));
+  }
+  o->keys[o->len] = (char*)malloc(strlen(key)+1);
+  strcpy(o->keys[o->len], key);
+  o->vals[o->len] = val;
+  o->len++;
+}
+static ZapValue zap_obj_get(ZapObject *o, const char *key) {
+  for (size_t i = 0; i < o->len; i++)
+    if (strcmp(o->keys[i], key) == 0) return o->vals[i];
+  return zap_val_null();
+}
+static ZapArray *zap_obj_keys(ZapObject *o) {
+  ZapArray *a = zap_arr_new();
+  for (size_t i = 0; i < o->len; i++) {
+    ZapValue v; v.tag = ZAP_STR; v.str = zap_str(o->keys[i]);
+    zap_arr_push(a, v);
+  }
+  return a;
+}
+static ZapArray *zap_obj_values(ZapObject *o) {
+  ZapArray *a = zap_arr_new();
+  for (size_t i = 0; i < o->len; i++) zap_arr_push(a, o->vals[i]);
+  return a;
+}
 
 /* ──────────────────────────────────────────────
    ZapArray operations
@@ -185,6 +239,7 @@ static void zap_print_arr(ZapArray *a) {
   }
   printf("]\\n");
 }
+static void zap_print_obj(ZapObject *o);
 static void zap_print_val(ZapValue v) {
   switch(v.tag) {
     case ZAP_NUM:  if(v.num==(long long)v.num) printf("%lld",(long long)v.num); else printf("%g",v.num); break;
@@ -196,9 +251,20 @@ static void zap_print_val(ZapValue v) {
       printf("]");
       break;
     }
+    case ZAP_OBJ: zap_print_obj(v.obj); break;
     default: printf("null"); break;
   }
 }
+static void zap_print_obj(ZapObject *o) {
+  printf("{");
+  for (size_t i = 0; i < o->len; i++) {
+    if (i > 0) printf(", ");
+    printf("%s: ", o->keys[i]);
+    zap_print_val(o->vals[i]);
+  }
+  printf("}");
+}
+static void zap_print_obj_ln(ZapObject *o) { zap_print_obj(o); printf("\\n"); }
 
 /* ──────────────────────────────────────────────
    Math builtins
@@ -263,7 +329,7 @@ static ZapArray *zap_range(double from, double to, double step) {
 `.trim()
 
 // ── Type system ──────────────────────────────────────────────────────
-type ZapType = "num" | "str" | "bool" | "arr" | "void" | "unknown"
+type ZapType = "num" | "str" | "bool" | "arr" | "obj" | "val" | "void" | "unknown"
 
 interface Env {
   vars: Map<string, ZapType>
@@ -295,6 +361,7 @@ function inferType(node: Node, env: Env): ZapType {
     case "Bool":     return "bool"
     case "Null":     return "unknown"
     case "Array":    return "arr"
+    case "Object":   return "obj"
     case "Ident":    return lookupType(env, node.name)
 
     case "BinOp": {
@@ -312,6 +379,12 @@ function inferType(node: Node, env: Env): ZapType {
     case "Index":
       return "unknown" // array element type unknown at compile time
 
+    case "Member": {
+      const ot = inferType(node.object, env)
+      if (ot === "obj") return "val"   // obj.prop → ZapValue
+      return "unknown"
+    }
+
     case "Call": {
       // Method call on array: arr.reverse(), arr.sort(), arr.join(), etc.
       if (node.callee.kind === "Member") {
@@ -326,6 +399,14 @@ function inferType(node: Node, env: Env): ZapType {
           if (arrRetStr.has(method))  return "str"
           if (arrRetNum.has(method))  return "num"
           if (arrRetBool.has(method)) return "bool"
+        }
+        if (ot === "obj") {
+          const method = node.callee.prop
+          if (method === "keys" || method === "values") return "arr"
+        }
+        // obj.prop (non-call member) → ZapValue
+        if (node.callee.kind === "Member" && inferType((node.callee as any).object, env) === "obj") {
+          return "val"
         }
         return "unknown"
       }
@@ -354,6 +435,8 @@ function ctype(t: ZapType): string {
     case "str":  return "ZapString"
     case "bool": return "int"
     case "arr":  return "ZapArray*"
+    case "obj":  return "ZapObject*"
+    case "val":  return "ZapValue"
     default:     return "double"
   }
 }
@@ -384,6 +467,11 @@ function cExpr(node: Node, env: Env): string {
     }
 
     case "Ident": return node.name
+
+    // ── Object literal ───────────────────────────────────────────────
+    case "Object":
+      // Handled in cStmt VarDecl — inline use falls back to a helper
+      return "__zap_obj_inline_unsupported"
 
     // ── Array literal ────────────────────────────────────────────────
     case "Array": {
@@ -440,18 +528,37 @@ function cExpr(node: Node, env: Env): string {
       return `${cExpr(node.object, env)}[(int)(${cExpr(node.index, env)})]`
     }
 
-    case "Member":
+    case "Member": {
+      const ot = inferType(node.object, env)
+      if (ot === "obj") {
+        return `zap_obj_get(${cExpr(node.object, env)}, "${node.prop}")`
+      }
       return `${cExpr(node.object, env)}.${node.prop}`
+    }
 
     case "Call": {
       if (node.callee.kind !== "Ident" && node.callee.kind !== "Member") return "0"
       const args = node.args.map(a => cExpr(a, env))
 
-      // Method call on array variable: arr.len(), arr.push(v), etc.
+      // Method call on object or array variable
       if (node.callee.kind === "Member") {
         const obj = cExpr(node.callee.object, env)
         const method = node.callee.prop
         const ot = inferType(node.callee.object, env)
+
+        if (ot === "obj") {
+          switch (method) {
+            case "keys":   return `zap_obj_keys(${obj})`
+            case "values": return `zap_obj_values(${obj})`
+            case "get":    return `zap_obj_get(${obj}, ${cExpr(node.args[0], env)}.data)`
+            case "set":    return `zap_obj_set(${obj}, ${cExpr(node.args[0], env)}.data, ${objVal(node.args[1], env)})`
+            case "has":    {
+              const key = cExpr(node.args[0], env)
+              return `(zap_obj_get(${obj}, ${key}.data).tag != ZAP_NULL)`
+            }
+          }
+        }
+
         if (ot === "arr") {
           switch(method) {
             case "len":     return `zap_arr_len(${obj})`
@@ -480,6 +587,8 @@ function cExpr(node: Node, env: Env): string {
           !C_BUILTINS_SET.has((node.args[0].callee as any).name)
 
         if (t === "arr")  return `zap_print_arr(${args[0]})`
+        if (t === "obj")  return `zap_print_obj_ln(${args[0]})`
+        if (t === "val")  return `(zap_print_val(${args[0]}), printf("\\n"))`
         if (t === "bool") return `zap_print_bool(${args[0]})`
         if (t === "str")  return `zap_print_str(${args[0]})`
         if (t === "num" || isUserFn) return `zap_print_num(${args[0]})`
@@ -527,16 +636,19 @@ function cExpr(node: Node, env: Env): string {
   }
 }
 
-// Convert a node to a ZapValue for array push operations
-function arrVal(node: Node | undefined, env: Env): string {
+// Convert a node to a ZapValue
+function toZapVal(node: Node | undefined, env: Env): string {
   if (!node) return "zap_val_null()"
   const t = inferType(node, env)
   const v = cExpr(node, env)
   if (t === "str")  return `zap_val_str(${v})`
   if (t === "bool") return `zap_val_bool(${v})`
-  if (t === "arr")  return `zap_val_null()` // TODO nested
+  if (t === "arr")  return `zap_val_null()` // nested arrays: TODO
+  if (t === "obj")  return `zap_val_obj(${v})`
   return `zap_val_num(${v})`
 }
+function arrVal(node: Node | undefined, env: Env): string { return toZapVal(node, env) }
+function objVal(node: Node | undefined, env: Env): string { return toZapVal(node, env) }
 
 // ── C statement emitter ──────────────────────────────────────────────
 function cStmt(node: Node, env: Env, indent: number): string {
@@ -546,6 +658,17 @@ function cStmt(node: Node, env: Env, indent: number): string {
     case "VarDecl": {
       const t = inferType(node.value, env)
       env.vars.set(node.name, t)
+
+      // Object literal — emit as zap_obj_new() + zap_obj_set() calls
+      if (t === "obj" && node.value.kind === "Object") {
+        env.vars.set(node.name, "obj")
+        const lines: string[] = []
+        lines.push(`${pad}ZapObject *${node.name} = zap_obj_new();`)
+        for (const { key, value } of node.value.pairs) {
+          lines.push(`${pad}zap_obj_set(${node.name}, "${key}", ${objVal(value, env)});`)
+        }
+        return lines.join("\n")
+      }
 
       // Array literal — emit init with __zap_arr_init
       if (t === "arr" && node.value.kind === "Array") {
@@ -569,6 +692,14 @@ function cStmt(node: Node, env: Env, indent: number): string {
     }
 
     case "Assign": {
+      // obj.prop = val
+      if (node.target.kind === "Member") {
+        const ot = inferType(node.target.object, env)
+        if (ot === "obj") {
+          const objName = cExpr(node.target.object, env)
+          return `${pad}zap_obj_set(${objName}, "${node.target.prop}", ${objVal(node.value, env)});`
+        }
+      }
       if (node.target.kind !== "Ident") return ""
       const name = (node.target as any).name
       return `${pad}${name} ${node.op} ${cExpr(node.value, env)};`
@@ -576,13 +707,16 @@ function cStmt(node: Node, env: Env, indent: number): string {
 
     case "FnDecl": {
       const childEnv = newEnv(env)
-      node.params.forEach(p => childEnv.vars.set(p, "unknown"))
+      const callSiteTypes = fnParamTypes.get(node.name) ?? []
+      node.params.forEach((p, i) => childEnv.vars.set(p, callSiteTypes[i] ?? "unknown"))
       // Detect return type
       const retType = detectReturnType(node.body, childEnv)
       env.fns.set(node.name, retType)
       const ct = ctype(retType)
-      // Params: unknown type → double for now
-      const params = node.params.map(p => `double ${p}`).join(", ") || "void"
+      const params = node.params.map((p, i) => {
+        const pt = callSiteTypes[i] ?? "unknown"
+        return `${ctype(pt)} ${p}`
+      }).join(", ") || "void"
       const body = node.body.map(n => cStmt(n, childEnv, indent + 1)).join("\n")
       return `${pad}${ct} ${node.name}(${params}) {\n${body}\n${pad}}`
     }
@@ -656,10 +790,41 @@ function detectReturnType(body: Node[], env: Env): ZapType {
 }
 
 // ── Main entry ───────────────────────────────────────────────────────
+/** fn name → per-param types inferred from call sites */
+const fnParamTypes: Map<string, ZapType[]> = new Map()
+
+/** Walk all nodes and collect param types from Call sites */
+function collectCallSiteTypes(nodes: Node[], env: Env) {
+  for (const node of nodes) {
+    if (node.kind === "Call" && node.callee.kind === "Ident") {
+      const name = node.callee.name
+      const argTypes = node.args.map(a => inferType(a, env))
+      if (!fnParamTypes.has(name)) {
+        fnParamTypes.set(name, argTypes)
+      }
+    }
+    // Recurse into body nodes
+    for (const key of ["body","then","else"] as const) {
+      if ((node as any)[key]?.length) collectCallSiteTypes((node as any)[key], env)
+    }
+    if ((node as any)["elif"]) {
+      for (const ei of (node as any)["elif"]) collectCallSiteTypes(ei.body, env)
+    }
+  }
+}
+
 export function generateC(program: Node): string {
   if (program.kind !== "Program") throw new Error("Expected Program node")
 
+  fnParamTypes.clear()
   const globalEnv = newEnv()
+
+  // Pre-pass: register variable types from VarDecl so call-site inference works
+  const scanEnv = newEnv()
+  for (const node of program.body) {
+    if (node.kind === "VarDecl") scanEnv.vars.set(node.name, inferType(node.value, scanEnv))
+  }
+  collectCallSiteTypes(program.body, scanEnv)
 
   // ── __zap_arr_init helper ─────────────────────────────────────────
   const ARR_INIT_HELPER = `
@@ -676,11 +841,12 @@ static ZapArray *__zap_arr_init(int n, ...) {
   const fwdDecls: string[] = []
   for (const node of program.body) {
     if (node.kind === "FnDecl") {
+      const callSiteTypes = fnParamTypes.get(node.name) ?? []
       const retEnv = newEnv(globalEnv)
-      node.params.forEach(p => retEnv.vars.set(p, "unknown"))
+      node.params.forEach((p, i) => retEnv.vars.set(p, callSiteTypes[i] ?? "unknown"))
       const retType = detectReturnType(node.body, retEnv)
       const ct = ctype(retType)
-      const params = node.params.map(p => `double ${p}`).join(", ") || "void"
+      const params = node.params.map((p, i) => `${ctype(callSiteTypes[i] ?? "unknown")} ${p}`).join(", ") || "void"
       fwdDecls.push(`${ct} ${node.name}(${params});`)
       globalEnv.fns.set(node.name, retType)
     }

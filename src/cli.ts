@@ -8,6 +8,8 @@ import { lex } from "./lexer"
 import { Parser } from "./parser"
 import { transpile } from "./transpiler"
 import { generateC } from "./codegen_c"
+import { format } from "./formatter"
+import { startRepl } from "./repl"
 
 const args = process.argv.slice(2)
 const command = args[0]
@@ -117,6 +119,72 @@ function emitC(file: string) {
   console.log(`[Zap] ✅ C source: ${outFile}`)
 }
 
+// ── zap fmt <file.zp> [--check] ──────────────────────────────────────
+function fmt(file: string) {
+  const check = flags.includes("--check")
+
+  // fmt on a directory — format all .zap/.zp files recursively
+  if (fs.existsSync(file) && fs.statSync(file).isDirectory()) {
+    const files = findZapFiles(file)
+    let changed = 0
+    for (const f of files) {
+      const result = fmtFile(f, check)
+      if (result) changed++
+    }
+    if (check) {
+      if (changed > 0) {
+        console.log(`[Zap] ❌ ${changed} file(s) need formatting. Run: zap fmt <dir>`)
+        process.exit(1)
+      } else {
+        console.log(`[Zap] ✅ All files are formatted.`)
+      }
+    } else {
+      console.log(`[Zap] ✅ Formatted ${changed} file(s).`)
+    }
+    return
+  }
+
+  const changed = fmtFile(file, check)
+  if (check) {
+    if (changed) {
+      console.log(`[Zap] ❌ ${path.basename(file)} needs formatting.`)
+      process.exit(1)
+    } else {
+      console.log(`[Zap] ✅ ${path.basename(file)} is already formatted.`)
+    }
+  } else {
+    if (changed) console.log(`[Zap] ✅ Formatted: ${file}`)
+    else         console.log(`[Zap] ✓  Already formatted: ${file}`)
+  }
+}
+
+function fmtFile(file: string, checkOnly: boolean): boolean {
+  const source = fs.readFileSync(file, "utf-8")
+  let formatted: string
+  try {
+    formatted = format(source)
+  } catch (e: any) {
+    console.error(`[Zap] ⚠️  Could not format ${file}: ${e.message}`)
+    return false
+  }
+  if (source === formatted) return false
+  if (!checkOnly) fs.writeFileSync(file, formatted, "utf-8")
+  return true
+}
+
+function findZapFiles(dir: string): string[] {
+  const results: string[] = []
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name)
+    if (entry.isDirectory() && entry.name !== "node_modules") {
+      results.push(...findZapFiles(full))
+    } else if (entry.isFile() && /\.(zap|zp)$/.test(entry.name)) {
+      results.push(full)
+    }
+  }
+  return results
+}
+
 // ── zap new <name> ───────────────────────────────────────────────────
 function newProject(name: string) {
   if (!name) { console.error("[Zap] Usage: zap new <project-name>"); process.exit(1) }
@@ -128,26 +196,31 @@ function newProject(name: string) {
 
 function showHelp() {
   console.log(`
-  ⚡ Zap Language v2.0.0
+  ⚡ Zap Language v1.1.0
   Simple · Fast · Full-Stack · Native
 
   Usage:
-    zap run    <file.zp>              Run a Zap file (via JS)
-    zap build  <file.zp>              Compile to JavaScript
-    zap build  <file.zp> --native     Compile to native binary
-    zap build  <file.zp> --native -o myapp   Set output name
-    zap emit-c <file.zp>              Show generated C code
-    zap new    <project-name>         Create a new Zap project
-    zap help                          Show this help
+    zap run    <file.zp>                Run a Zap file (via JS)
+    zap build  <file.zp>                Compile to JavaScript
+    zap build  <file.zp> --native       Compile to native binary
+    zap build  <file.zp> --native -o x  Set output binary name
+    zap repl                            Start interactive REPL
+    zap fmt    <file.zp>                Format a Zap file in-place
+    zap fmt    <dir>                    Format all .zap/.zp files in dir
+    zap fmt    <file.zp> --check        Check formatting without writing
+    zap emit-c <file.zp>                Show generated C code
+    zap new    <project-name>           Scaffold a new Zap project
+    zap help                            Show this help
 
   Examples:
     zap run hello.zp
     zap build server.zp
-    zap build hello.zp --native
     zap build hello.zp --native -o hello
-    ./hello
+    zap fmt .
+    zap fmt main.zp --check
 
   File extensions:  .zap  or  .zp  (both work)
+  npm: npm install -g zap-language
   `)
 }
 
@@ -163,6 +236,13 @@ switch (command) {
   case "emit-c":
     if (!filePath) { console.error("[Zap] Error: No file specified"); process.exit(1) }
     emitC(filePath)
+    break
+  case "fmt":
+    if (!filePath) { console.error("[Zap] Usage: zap fmt <file.zp|dir> [--check]"); process.exit(1) }
+    fmt(filePath)
+    break
+  case "repl":
+    startRepl()
     break
   case "new":
     newProject(filePath)

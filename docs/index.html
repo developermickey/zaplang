@@ -40,7 +40,7 @@
     <div class="hero-content">
       <a href="https://www.npmjs.com/package/zap-language" target="_blank" class="hero-badge">
         <span class="badge-dot"></span>
-        v1.1.0 · Now on npm
+        v1.2.0 · Now on npm
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
 
@@ -76,9 +76,9 @@
         <div class="stat-sep"></div>
         <div class="stat"><span class="stat-n">2</span><span class="stat-l">Compile Targets</span></div>
         <div class="stat-sep"></div>
-        <div class="stat"><span class="stat-n">MIT</span><span class="stat-l">Open Source</span></div>
+        <div class="stat"><span class="stat-n">REPL</span><span class="stat-l">Interactive Shell</span></div>
         <div class="stat-sep"></div>
-        <div class="stat"><span class="stat-n">.zap</span><span class="stat-l">File Extension</span></div>
+        <div class="stat"><span class="stat-n">MIT</span><span class="stat-l">Open Source</span></div>
       </div>
     </div>
   </section>
@@ -97,6 +97,7 @@
             <button class="wtab active" data-tab="hello">hello.zap</button>
             <button class="wtab" data-tab="server">server.zap</button>
             <button class="wtab" data-tab="native">native.zap</button>
+            <button class="wtab" data-tab="repl">repl</button>
           </div>
           <span class="win-lang">⚡ Zap</span>
         </div>
@@ -140,6 +141,23 @@
 
 }</pre></div>
 
+          <div class="wcode" id="wcode-repl"><pre><span class="c">// Interactive REPL — try Zap instantly</span>
+<span class="t-dim">zap&gt;</span> <span class="kw">let</span> <span class="v">x</span> = <span class="n">42</span>
+<span class="t-dim">zap&gt;</span> <span class="bi">print</span>(x)
+<span class="t-out">42</span>
+<span class="t-dim">zap&gt;</span> <span class="kw">let</span> <span class="v">nums</span> = [<span class="n">3</span>, <span class="n">1</span>, <span class="n">4</span>, <span class="n">1</span>, <span class="n">5</span>]
+<span class="t-dim">zap&gt;</span> nums.sort()
+<span class="t-dim">zap&gt;</span> <span class="bi">print</span>(nums.join(<span class="s">", "</span>))
+<span class="t-out">1, 1, 3, 4, 5</span>
+<span class="t-dim">zap&gt;</span> <span class="kw">fn</span> <span class="fn">fib</span>(n) {
+<span class="t-dim">...  </span>  <span class="kw">if</span> (n &lt;= <span class="n">1</span>) { <span class="kw">return</span> n }
+<span class="t-dim">...  </span>  <span class="kw">return</span> <span class="fn">fib</span>(n-<span class="n">1</span>) + <span class="fn">fib</span>(n-<span class="n">2</span>)
+<span class="t-dim">...  </span>}
+<span class="t-dim">zap&gt;</span> <span class="bi">print</span>(<span class="fn">fib</span>(<span class="n">10</span>))
+<span class="t-out">55</span>
+<span class="t-dim">zap&gt;</span> <span class="c">.exit</span>
+<span class="t-out">Bye! ⚡</span></pre></div>
+
           <div class="wcode" id="wcode-native"><pre><span class="c">// Compiles to a real native binary</span>
 <span class="kw">fn</span> <span class="fn">fibonacci</span>(n) {
   <span class="kw">if</span> (n <= <span class="n">1</span>) { <span class="kw">return</span> n }
@@ -160,6 +178,7 @@
           <span id="win-cmd-hello">zap run hello.zap</span>
           <span id="win-cmd-server" class="hidden">zap run server.zap</span>
           <span id="win-cmd-native" class="hidden">zap build native.zap --native -o app</span>
+          <span id="win-cmd-repl" class="hidden">zap repl</span>
         </div>
       </div>
     </div>
@@ -215,6 +234,20 @@
           <h3>VS Code Extension</h3>
           <p>Syntax highlighting, snippets, hover docs, auto-complete and file icons for .zap / .zp files.</p>
         </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="--ic:#a78bfa">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3>Auto-Formatter</h3>
+          <p><code>zap fmt</code> formats your code in-place. Use <code>--check</code> in CI to enforce consistent style.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon" style="--ic:#4ade80">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 9l4 4-4 4M13 17h4"/></svg>
+          </div>
+          <h3>Interactive REPL</h3>
+          <p><code>zap repl</code> lets you explore the language instantly. Persistent context, multi-line input, <code>.help</code> commands.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -232,6 +265,8 @@
           <div class="qs-step"><span class="qs-n">02</span><div><h3>Create a file</h3><div class="qs-code"><code>echo 'print("Hello!")' > app.zap</code></div></div></div>
           <div class="qs-step"><span class="qs-n">03</span><div><h3>Run it</h3><div class="qs-code"><code>zap run app.zap</code></div></div></div>
           <div class="qs-step"><span class="qs-n">04</span><div><h3>Build native binary</h3><div class="qs-code"><code>zap build app.zap --native</code></div></div></div>
+          <div class="qs-step"><span class="qs-n">05</span><div><h3>Try the REPL</h3><div class="qs-code"><code>zap repl</code></div></div></div>
+          <div class="qs-step"><span class="qs-n">06</span><div><h3>Format code</h3><div class="qs-code"><code>zap fmt app.zap</code></div></div></div>
         </div>
         <div class="terminal-window">
           <div class="tw-bar">
