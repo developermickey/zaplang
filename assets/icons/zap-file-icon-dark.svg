@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Zap Source File Icon Dark Theme</title>
+  <desc id="desc">A dark editor document icon with the Zap lightning mark.</desc>
+  <defs>
+    <linearGradient id="paper" x1="22" y1="8" x2="106" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1E293B"/>
+      <stop offset="1" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="fold" x1="82" y1="10" x2="116" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="bolt" x1="42" y1="31" x2="87" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FEF08A"/>
+      <stop offset="0.48" stop-color="#FACC15"/>
+      <stop offset="1" stop-color="#F97316"/>
+    </linearGradient>
+  </defs>
+  <path d="M24 8h59l21 21v91H24V8z" fill="url(#paper)" stroke="#93C5FD" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M83 8v23h21" fill="url(#fold)" stroke="#93C5FD" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M42 32h48L64 63h26L42 102l20-34H38l32-36H42z" fill="url(#bolt)" stroke="#020617" stroke-width="3" stroke-linejoin="round"/>
+  <text x="64" y="116" text-anchor="middle" font-family="Inter, Avenir, Arial, sans-serif" font-size="18" font-weight="800" fill="#E0F2FE">ZAP</text>
+</svg>

@@ -1,0 +1,111 @@
+// ⚡ Zap Language - Full Feature Demo
+
+// ── Variables ──────────────────────────────────────────
+let name = "Mukesh"
+let age = 25
+let score = 98.5
+let active = true
+let nothing = null
+
+// ── Template Strings ───────────────────────────────────
+let greeting = `Hello, {name}! You are {age} years old.`
+print(greeting)
+
+// ── Math ───────────────────────────────────────────────
+let x = 10
+x += 5
+print(`x after += 5 is {x}`)
+
+let powered = 2 ** 8
+print(`2 to the power 8 = {powered}`)
+
+print(`sqrt(144) = {sqrt(144)}`)
+print(`abs(-42) = {abs(-42)}`)
+print(`round(3.7) = {round(3.7)}`)
+print(`random int 1-10: {randomInt(1, 10)}`)
+
+// ── If / Else If / Else ────────────────────────────────
+if age >= 18 {
+  print("Adult")
+} else if age >= 13 {
+  print("Teenager")
+} else {
+  print("Child")
+}
+
+// ── Ternary ────────────────────────────────────────────
+let status = age >= 18 ? "adult" : "minor"
+print(`Status: {status}`)
+
+// ── While Loop ─────────────────────────────────────────
+let count = 0
+while count < 3 {
+  print(`count = {count}`)
+  count += 1
+}
+
+// ── Loop with step ─────────────────────────────────────
+print("Even numbers:")
+loop i from 0 to 10 step 2 {
+  print(i)
+}
+
+// ── Break / Continue ───────────────────────────────────
+print("Loop with break at 5:")
+loop i from 0 to 10 {
+  if i == 5 { break }
+  print(i)
+}
+
+// ── Functions ──────────────────────────────────────────
+fn add(a, b) {
+  return a + b
+}
+
+fn factorial(n) {
+  if n <= 1 { return 1 }
+  return n * factorial(n - 1)
+}
+
+print(`3 + 7 = {add(3, 7)}`)
+print(`factorial(6) = {factorial(6)}`)
+
+// ── Arrays ─────────────────────────────────────────────
+let fruits = ["apple", "banana", "mango", "grape"]
+print(`fruits: {join(fruits, ", ")}`)
+print(`length: {len(fruits)}`)
+push(fruits, "orange")
+print(`after push: {join(fruits, ", ")}`)
+
+let nums = [5, 3, 8, 1, 9, 2]
+print(`sorted: {sort(nums)}`)
+print(`max: {max(5, 3, 8, 1, 9)}`)
+print(`min: {min(5, 3, 8, 1, 9)}`)
+
+// ── Objects ────────────────────────────────────────────
+let user = { name: "Mukesh", age: 25, city: "India" }
+print(`name: {user.name}`)
+print(`keys: {keys(user)}`)
+
+// ── String functions ───────────────────────────────────
+let msg = "  Hello Zap World  "
+print(trim(msg))
+print(upper("hello"))
+print(lower("WORLD"))
+print(replace("I love JS", "JS", "Zap"))
+print(split("a,b,c", ","))
+
+// ── Try / Catch ────────────────────────────────────────
+try {
+  let data = parse("invalid json{{{")
+  print(data)
+} catch(err) {
+  print(`Caught error: {err.message}`)
+}
+
+// ── Type checking ──────────────────────────────────────
+print(`type of name: {type(name)}`)
+print(`type of age: {type(age)}`)
+print(`type of fruits: {type(fruits)}`)
+
+print("⚡ All features work!")

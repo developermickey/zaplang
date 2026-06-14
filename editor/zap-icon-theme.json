@@ -1,0 +1,38 @@
+{
+  "iconDefinitions": {
+    "_zap_file": {
+      "iconPath": "../assets/icons/zap-file-icon.svg"
+    },
+    "_zap_file_dark": {
+      "iconPath": "../assets/icons/zap-file-icon-dark.svg"
+    },
+    "_zap_file_light": {
+      "iconPath": "../assets/icons/zap-file-icon-light.svg"
+    }
+  },
+  "fileExtensions": {
+    "zap": "_zap_file",
+    "zp": "_zap_file"
+  },
+  "languageIds": {
+    "zap": "_zap_file"
+  },
+  "light": {
+    "fileExtensions": {
+      "zap": "_zap_file_light",
+      "zp": "_zap_file_light"
+    },
+    "languageIds": {
+      "zap": "_zap_file_light"
+    }
+  },
+  "highContrast": {
+    "fileExtensions": {
+      "zap": "_zap_file_dark",
+      "zp": "_zap_file_dark"
+    },
+    "languageIds": {
+      "zap": "_zap_file_dark"
+    }
+  }
+}
