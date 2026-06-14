@@ -85,10 +85,17 @@ export class Parser {
       return this.parseCompoundAssign()
     }
 
-    // assignment: ident = expr  OR  obj.prop = expr  OR  arr[i] = expr
+    // simple assignment: ident = expr
     if (t.type === "IDENT" && this.peek(1).type === "EQ") return this.parseAssign()
 
-    return this.parseExpr()
+    // member/index assignment: obj.prop = expr  OR  arr[i] = expr
+    // Parse as expression; if we end up with Member/Index followed by EQ, rewrite as Assign
+    const expr = this.parseExpr()
+    if ((expr.kind === "Member" || expr.kind === "Index") && this.check("EQ")) {
+      this.expect("EQ")
+      return { kind: "Assign", target: expr, op: "=", value: this.parseExpr() }
+    }
+    return expr
   }
 
   private parseVarDecl(): Node {
