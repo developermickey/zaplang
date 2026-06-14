@@ -35,6 +35,8 @@
       <h4>Getting Started</h4>
       <a href="#install">Installation</a>
       <a href="#cli">CLI Commands</a>
+      <a href="#cli-fmt">zap fmt</a>
+      <a href="#cli-repl">zap repl</a>
       <a href="#hello">Hello World</a>
 
       <h4>Language</h4>
@@ -79,6 +81,23 @@ zap build hello.zap --native -o myapp</code></pre>
       <h3>zap emit-c</h3>
       <p>Emit the generated C code (for inspection/debugging).</p>
       <pre><code>zap emit-c hello.zap</code></pre>
+
+      <h3 id="cli-fmt">zap fmt</h3>
+      <p>Auto-format a .zap file in-place. Use <code>--check</code> to verify formatting without writing (useful in CI).</p>
+      <pre><code>zap fmt hello.zap            <span class="c"># format file in-place</span>
+zap fmt .                    <span class="c"># format all .zap/.zp files recursively</span>
+zap fmt hello.zap --check    <span class="c"># exit 1 if not formatted</span></code></pre>
+
+      <h3 id="cli-repl">zap repl</h3>
+      <p>Start the interactive REPL. Context persists across inputs — define variables and functions, then use them.</p>
+      <pre><code>zap repl</code></pre>
+      <p>REPL commands:</p>
+      <ul>
+        <li><code>.help</code> — show available commands</li>
+        <li><code>.reset</code> — reset the session context</li>
+        <li><code>.clear</code> — clear the terminal</li>
+        <li><code>.exit</code> — quit the REPL</li>
+      </ul>
 
       <h3>zap new</h3>
       <p>Scaffold a new Zap project.</p>
@@ -176,14 +195,27 @@ nums.push(<span class="n">6</span>)
 <span class="kw">let</span> <span class="v">r</span> = <span class="fn">range</span>(<span class="n">1</span>, <span class="n">6</span>)       <span class="c">// [1,2,3,4,5]</span></code></pre>
 
       <h2 id="objects">Objects</h2>
+      <p>Objects are key-value maps. They work in both JS and native compilation modes.</p>
       <pre><code><span class="kw">let</span> <span class="v">person</span> = {
   name: <span class="s">"Mukesh"</span>,
   age: <span class="n">25</span>,
   active: <span class="b">true</span>
 }
 
-<span class="fn">print</span>(person.name)   <span class="c">// Mukesh</span>
-person.age = <span class="n">26</span></code></pre>
+<span class="c">// Property access</span>
+<span class="fn">print</span>(person.name)      <span class="c">// Mukesh</span>
+
+<span class="c">// Property assignment</span>
+person.age = <span class="n">26</span>
+<span class="fn">print</span>(person)           <span class="c">// {name: Mukesh, age: 26, active: true}</span>
+
+<span class="c">// Object methods</span>
+<span class="kw">let</span> <span class="v">keys</span> = person.keys()    <span class="c">// ["name", "age", "active"]</span>
+<span class="kw">let</span> <span class="v">vals</span> = person.values()  <span class="c">// ["Mukesh", 26, true]</span>
+
+<span class="c">// Dynamic key access</span>
+person.set(<span class="s">"email"</span>, <span class="s">"zap@example.com"</span>)
+<span class="kw">let</span> <span class="v">email</span> = person.get(<span class="s">"email"</span>)</code></pre>
 
       <h2 id="strings">Strings & Templates</h2>
       <pre><code><span class="kw">let</span> <span class="v">name</span> = <span class="s">"Zap"</span>
