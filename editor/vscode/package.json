@@ -1,0 +1,137 @@
+{
+  "name": "zap-language-support",
+  "displayName": "⚡ Zap Language",
+  "description": "Syntax highlighting, code snippets, auto-complete, and file icons for the Zap programming language (.zap / .zp)",
+  "version": "1.0.0",
+  "publisher": "murphtech",
+  "author": {
+    "name": "Mukesh Pathak",
+    "url": "https://github.com/developermickey"
+  },
+  "license": "MIT",
+  "icon": "icons/zap-logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/developermickey/zaplang"
+  },
+  "bugs": {
+    "url": "https://github.com/developermickey/zaplang/issues"
+  },
+  "homepage": "https://github.com/developermickey/zaplang",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "zap", "zaplang", "programming language", "syntax highlighting", "snippets"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "zap",
+        "aliases": ["Zap", "zap"],
+        "extensions": [".zap", ".zp"],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/zap-file-icon-light.svg",
+          "dark": "./icons/zap-file-icon-dark.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "zap",
+        "scopeName": "source.zap",
+        "path": "./syntaxes/zap.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "zap",
+        "path": "./snippets/zap.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "zap.runFile",
+        "title": "⚡ Zap: Run File",
+        "icon": "$(play)"
+      },
+      {
+        "command": "zap.buildFile",
+        "title": "⚡ Zap: Build to JS"
+      },
+      {
+        "command": "zap.buildNative",
+        "title": "⚡ Zap: Build Native Binary"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "zap.runFile",
+          "when": "resourceExtname == .zap || resourceExtname == .zp",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "zap.runFile",
+          "when": "resourceExtname == .zap || resourceExtname == .zp",
+          "group": "zap"
+        },
+        {
+          "command": "zap.buildFile",
+          "when": "resourceExtname == .zap || resourceExtname == .zp",
+          "group": "zap"
+        },
+        {
+          "command": "zap.buildNative",
+          "when": "resourceExtname == .zap || resourceExtname == .zp",
+          "group": "zap"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Zap Language",
+      "properties": {
+        "zap.zapPath": {
+          "type": "string",
+          "default": "zap",
+          "description": "Path to the zap CLI executable"
+        },
+        "zap.formatOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Format Zap files on save"
+        }
+      }
+    },
+    "themes": [
+      {
+        "label": "Zap Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/zap-dark.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "@vscode/vsce": "^2.22.0"
+  }
+}

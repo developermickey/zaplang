@@ -1,0 +1,192 @@
+{
+  "Print": {
+    "prefix": "print",
+    "body": ["print(${1:\"Hello, World!\"})"],
+    "description": "Print to console"
+  },
+  "Variable": {
+    "prefix": "let",
+    "body": ["let ${1:name} = ${2:value}"],
+    "description": "Declare a variable"
+  },
+  "Function": {
+    "prefix": "fn",
+    "body": [
+      "fn ${1:name}(${2:params}) {",
+      "\t${3:// body}",
+      "\treturn ${4:result}",
+      "}"
+    ],
+    "description": "Define a function"
+  },
+  "If": {
+    "prefix": "if",
+    "body": [
+      "if ${1:condition} {",
+      "\t${2:// body}",
+      "}"
+    ],
+    "description": "If statement"
+  },
+  "If Else": {
+    "prefix": "ife",
+    "body": [
+      "if ${1:condition} {",
+      "\t${2:// then}",
+      "} else {",
+      "\t${3:// else}",
+      "}"
+    ],
+    "description": "If/else statement"
+  },
+  "Loop": {
+    "prefix": "loop",
+    "body": [
+      "loop ${1:i} from ${2:0} to ${3:10} {",
+      "\t${4:print(i)}",
+      "}"
+    ],
+    "description": "Loop from to"
+  },
+  "Loop with step": {
+    "prefix": "loops",
+    "body": [
+      "loop ${1:i} from ${2:0} to ${3:10} step ${4:2} {",
+      "\t${5:print(i)}",
+      "}"
+    ],
+    "description": "Loop with step"
+  },
+  "While": {
+    "prefix": "while",
+    "body": [
+      "while ${1:condition} {",
+      "\t${2:// body}",
+      "}"
+    ],
+    "description": "While loop"
+  },
+  "Try Catch": {
+    "prefix": "try",
+    "body": [
+      "try {",
+      "\t${1:// code}",
+      "} catch(${2:err}) {",
+      "\tprint(`Error: {${2:err}.message}`)",
+      "}"
+    ],
+    "description": "Try/catch block"
+  },
+  "Server": {
+    "prefix": "server",
+    "body": [
+      "server on ${1:3000} {",
+      "\tget \"/\" -> fn(req) {",
+      "\t\treturn \"<h1>${2:Hello from Zap!}</h1>\"",
+      "\t}",
+      "}"
+    ],
+    "description": "Web server"
+  },
+  "Route GET": {
+    "prefix": "get",
+    "body": [
+      "get \"${1:/path}\" -> fn(req) {",
+      "\treturn ${2:\"response\"}",
+      "}"
+    ],
+    "description": "GET route"
+  },
+  "Route POST": {
+    "prefix": "post",
+    "body": [
+      "post \"${1:/path}\" -> fn(req) {",
+      "\tlet body = req.body",
+      "\treturn { ok: true, data: body }",
+      "}"
+    ],
+    "description": "POST route"
+  },
+  "Import": {
+    "prefix": "import",
+    "body": ["import ${1:name} from \"${2:module}\""],
+    "description": "Import a module"
+  },
+  "Template string": {
+    "prefix": "tmpl",
+    "body": ["`${1:Hello}, {${2:name}}!`"],
+    "description": "Template string"
+  },
+  "Anonymous function": {
+    "prefix": "afn",
+    "body": [
+      "fn(${1:params}) {",
+      "\t${2:// body}",
+      "}"
+    ],
+    "description": "Anonymous function"
+  },
+  "Console log": {
+    "prefix": "cl",
+    "body": ["print(${1:value})"],
+    "description": "Print value"
+  },
+  "Ternary": {
+    "prefix": "tern",
+    "body": ["${1:condition} ? ${2:trueVal} : ${3:falseVal}"],
+    "description": "Ternary operator"
+  },
+  "Object": {
+    "prefix": "obj",
+    "body": [
+      "let ${1:name} = {",
+      "\t${2:key}: ${3:value}",
+      "}"
+    ],
+    "description": "Object literal"
+  },
+  "Array": {
+    "prefix": "arr",
+    "body": ["let ${1:items} = [${2}]"],
+    "description": "Array literal"
+  },
+  "Full app": {
+    "prefix": "zapapp",
+    "body": [
+      "// ${1:App Name} — built with Zap ⚡",
+      "",
+      "let appName = \"${1:App Name}\"",
+      "",
+      "fn main() {",
+      "\tprint(`Starting {appName}...`)",
+      "\t${2:// your code here}",
+      "}",
+      "",
+      "main()"
+    ],
+    "description": "Full Zap app template"
+  },
+  "Full server app": {
+    "prefix": "zapserver",
+    "body": [
+      "// ${1:Server App} — built with Zap ⚡",
+      "",
+      "let port = ${2:3000}",
+      "",
+      "server on port {",
+      "\tget \"/\" -> fn(req) {",
+      "\t\treturn \"<h1>Welcome to ${1:Server App}!</h1>\"",
+      "\t}",
+      "",
+      "\tget \"/api/status\" -> fn(req) {",
+      "\t\treturn { status: \"ok\", app: \"${1:Server App}\" }",
+      "\t}",
+      "",
+      "\tpost \"/api/data\" -> fn(req) {",
+      "\t\treturn { ok: true, received: req.body }",
+      "\t}",
+      "}"
+    ],
+    "description": "Full Zap server template"
+  }
+}
