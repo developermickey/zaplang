@@ -1,0 +1,53 @@
+// ⚡ Zap Native — compiled to a real binary
+
+fn fibonacci(n) {
+  if n <= 1 { return n }
+  return fibonacci(n - 1) + fibonacci(n - 2)
+}
+
+fn factorial(n) {
+  if n <= 1 { return 1 }
+  return n * factorial(n - 1)
+}
+
+fn isPrime(n) {
+  if n < 2 { return false }
+  let i = 2
+  while i * i <= n {
+    if n % i == 0 { return false }
+    i += 1
+  }
+  return true
+}
+
+print("⚡ Zap Native Binary")
+print("====================")
+
+// Fibonacci
+print("Fibonacci sequence:")
+loop i from 0 to 10 {
+  print(fibonacci(i))
+}
+
+// Factorial
+print("Factorials:")
+loop i from 1 to 8 {
+  print(factorial(i))
+}
+
+// Primes
+print("Primes up to 50:")
+loop i from 2 to 51 {
+  if isPrime(i) {
+    print(i)
+  }
+}
+
+// Math
+print("Math:")
+print(sqrt(144))
+print(pow(2, 10))
+print(abs(-99))
+print(round(3.7))
+
+print("Done!")
