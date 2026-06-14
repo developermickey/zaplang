@@ -1,0 +1,98 @@
+// Zap core language tests
+
+test("arithmetic", fn() {
+  assertEq(1 + 1, 2)
+  assertEq(10 - 3, 7)
+  assertEq(4 * 5, 20)
+  assertEq(10 / 2, 5)
+  assertEq(10 % 3, 1)
+})
+
+test("strings", fn() {
+  let name = "Zap"
+  assertEq(len(name), 3)
+  assertEq(upper("hello"), "HELLO")
+  assertEq(lower("WORLD"), "world")
+  assertEq(trim("  hi  "), "hi")
+})
+
+test("booleans", fn() {
+  assert(true)
+  assert(1 == 1)
+  assert(2 > 1)
+  assert(3 >= 3)
+  assertEq(1 == 2, false)
+})
+
+test("arrays", fn() {
+  let nums = [1, 2, 3, 4, 5]
+  assertEq(nums.len(), 5)
+  assertEq(nums[0], 1)
+  assertEq(nums[4], 5)
+  nums.push(6)
+  assertEq(nums.len(), 6)
+  let popped = nums.pop()
+  assertEq(popped, 6)
+  assertEq(nums.len(), 5)
+  assert(nums.includes(3))
+  assertEq(nums.indexOf(3), 2)
+  assertEq(nums.join(","), "1,2,3,4,5")
+})
+
+test("array sort and reverse", fn() {
+  let a = [3, 1, 4, 1, 5]
+  let s = a.sort()
+  assertEq(s.len(), 5)
+  assertEq(s[0], 1)
+  assertEq(s[4], 5)
+})
+
+test("functions", fn() {
+  fn add(x, y) {
+    return x + y
+  }
+  assertEq(add(2, 3), 5)
+  assertEq(add(10, -4), 6)
+})
+
+test("conditionals", fn() {
+  fn grade(score) {
+    if (score >= 90) {
+      return "A"
+    } else if (score >= 80) {
+      return "B"
+    } else {
+      return "C"
+    }
+  }
+  assertEq(grade(95), "A")
+  assertEq(grade(85), "B")
+  assertEq(grade(70), "C")
+})
+
+test("loops accumulate correctly", fn() {
+  let sum = 0
+  loop i from 1 to 6 {
+    sum = sum + i
+  }
+  assertEq(sum, 15)
+})
+
+test("range", fn() {
+  let r = range(1, 6)
+  assertEq(r.len(), 5)
+  assertEq(r[0], 1)
+  assertEq(r[4], 5)
+})
+
+test("ternary", fn() {
+  let x = 10
+  let label = x > 5 ? "big" : "small"
+  assertEq(label, "big")
+})
+
+test("assertThrows works", fn() {
+  assertThrows(fn() {
+    assert(false, "intentional failure")
+  })
+})

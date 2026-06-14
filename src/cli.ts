@@ -10,6 +10,7 @@ import { transpile } from "./transpiler"
 import { generateC } from "./codegen_c"
 import { format } from "./formatter"
 import { startRepl } from "./repl"
+import { runTests } from "./test_runner"
 
 const args = process.argv.slice(2)
 const command = args[0]
@@ -204,6 +205,9 @@ function showHelp() {
     zap build  <file.zp>                Compile to JavaScript
     zap build  <file.zp> --native       Compile to native binary
     zap build  <file.zp> --native -o x  Set output binary name
+    zap test   <file.test.zp>            Run a test file
+    zap test   <dir>                    Run all *.test.zp files in dir
+    zap test   . --filter=<name>        Run only matching test names
     zap repl                            Start interactive REPL
     zap fmt    <file.zp>                Format a Zap file in-place
     zap fmt    <dir>                    Format all .zap/.zp files in dir
@@ -241,6 +245,11 @@ switch (command) {
     if (!filePath) { console.error("[Zap] Usage: zap fmt <file.zp|dir> [--check]"); process.exit(1) }
     fmt(filePath)
     break
+  case "test": {
+    const testTargets = filePath ? [filePath] : ["."]
+    runTests(testTargets, flags)
+    break
+  }
   case "repl":
     startRepl()
     break
