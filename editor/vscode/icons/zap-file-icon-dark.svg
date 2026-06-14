@@ -1,23 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
-  <title id="title">Zap Source File Icon Dark Theme</title>
-  <desc id="desc">A dark editor document icon with the Zap lightning mark.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Zap Source File — Dark Theme</title>
   <defs>
-    <linearGradient id="paper" x1="22" y1="8" x2="106" y2="120" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#1E293B"/>
+    <linearGradient id="paper-d" x1="22" y1="8" x2="106" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1e293b"/>
       <stop offset="1" stop-color="#020617"/>
     </linearGradient>
-    <linearGradient id="fold" x1="82" y1="10" x2="116" y2="46" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#22D3EE"/>
-      <stop offset="1" stop-color="#2563EB"/>
-    </linearGradient>
-    <linearGradient id="bolt" x1="42" y1="31" x2="87" y2="104" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FEF08A"/>
-      <stop offset="0.48" stop-color="#FACC15"/>
-      <stop offset="1" stop-color="#F97316"/>
+    <linearGradient id="fold-d" x1="82" y1="10" x2="116" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#60a5fa"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
     </linearGradient>
   </defs>
-  <path d="M24 8h59l21 21v91H24V8z" fill="url(#paper)" stroke="#93C5FD" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M83 8v23h21" fill="url(#fold)" stroke="#93C5FD" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M42 32h48L64 63h26L42 102l20-34H38l32-36H42z" fill="url(#bolt)" stroke="#020617" stroke-width="3" stroke-linejoin="round"/>
-  <text x="64" y="116" text-anchor="middle" font-family="Inter, Avenir, Arial, sans-serif" font-size="18" font-weight="800" fill="#E0F2FE">ZAP</text>
+  <!-- Document shape -->
+  <path d="M24 8h59l21 21v91H24V8z" fill="url(#paper-d)" stroke="#3b82f6" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M83 8v23h21" fill="url(#fold-d)" stroke="#3b82f6" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Blue circle badge (bottom right) -->
+  <circle cx="88" cy="94" r="26" fill="#3b82f6" opacity="0.9"/>
+  <!-- White bolt in badge -->
+  <path d="M81 79 L93 67 C94.2 65.8 96.3 67.2 95.8 68.8 L93.2 79 C93 80 93.7 81 94.7 81 L100 81 C101.5 81 102.2 83 101.1 84.1 L89.4 97 C88.2 98.3 86.1 97 86.6 95.3 L89.3 84 C89.5 83 88.8 82 87.8 82 L82.6 82 C81 82 80.3 79.8 81 79 Z" fill="white"/>
+  <!-- .zap extension label -->
+  <text x="50" y="110" text-anchor="middle" font-family="'SF Mono', Consolas, monospace" font-size="14" font-weight="700" fill="#93c5fd">.zap</text>
 </svg>
