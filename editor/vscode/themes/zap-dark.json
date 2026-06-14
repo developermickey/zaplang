@@ -4,34 +4,73 @@
   "colors": {
     "editor.background": "#0d1117",
     "editor.foreground": "#e6edf3",
+    "editor.selectionBackground": "#264f78",
+    "editor.lineHighlightBackground": "#161b22",
+    "editorCursor.foreground": "#f5a623",
     "activityBar.background": "#010409",
+    "activityBar.foreground": "#f5a623",
     "sideBar.background": "#010409",
+    "sideBar.foreground": "#c9d1d9",
     "statusBar.background": "#f5a623",
-    "statusBar.foreground": "#000000"
+    "statusBar.foreground": "#000000",
+    "tab.activeBackground": "#0d1117",
+    "tab.activeForeground": "#f5a623",
+    "editorLineNumber.foreground": "#484f58",
+    "editorLineNumber.activeForeground": "#f5a623"
   },
   "tokenColors": [
     {
-      "name": "Keywords",
+      "name": "Keywords (let, fn, if, else, return, loop, while, from, to, step, break, continue)",
       "scope": ["keyword.control.zap", "storage.type.zap"],
       "settings": { "foreground": "#ff7b72", "fontStyle": "bold" }
     },
     {
-      "name": "Functions",
-      "scope": ["entity.name.function.zap", "entity.name.function.call.zap"],
-      "settings": { "foreground": "#d2a8ff" }
+      "name": "Import / export keywords",
+      "scope": ["keyword.control.import.zap"],
+      "settings": { "foreground": "#ff7b72", "fontStyle": "bold" }
     },
     {
-      "name": "Builtins",
-      "scope": ["support.function.builtin.zap"],
+      "name": "Variable names (identifiers)",
+      "scope": ["variable.other.zap", "variable.name.zap"],
       "settings": { "foreground": "#79c0ff" }
     },
     {
+      "name": "Function declarations",
+      "scope": ["entity.name.function.zap"],
+      "settings": { "foreground": "#d2a8ff", "fontStyle": "bold" }
+    },
+    {
+      "name": "Function calls",
+      "scope": ["entity.name.function.call.zap"],
+      "settings": { "foreground": "#d2a8ff" }
+    },
+    {
+      "name": "Parameters",
+      "scope": ["variable.parameter.zap"],
+      "settings": { "foreground": "#ffa657" }
+    },
+    {
+      "name": "Built-in functions",
+      "scope": ["support.function.builtin.zap"],
+      "settings": { "foreground": "#3fb950" }
+    },
+    {
       "name": "Strings",
-      "scope": ["string.quoted.double.zap", "string.quoted.single.zap", "string.template.zap"],
+      "scope": [
+        "string.quoted.double.zap",
+        "string.quoted.single.zap",
+        "string.template.zap",
+        "string.quoted.template.zap"
+      ],
       "settings": { "foreground": "#a5d6ff" }
     },
     {
-      "name": "Template expression",
+      "name": "Template expression braces",
+      "scope": ["punctuation.definition.template-expression.zap"],
+      "settings": { "foreground": "#f5a623", "fontStyle": "bold" }
+    },
+    {
+      "name": "Template expression content",
       "scope": ["meta.template.expression.zap"],
       "settings": { "foreground": "#ffa657" }
     },
@@ -41,8 +80,13 @@
       "settings": { "foreground": "#f5a623" }
     },
     {
-      "name": "Booleans / null",
-      "scope": ["constant.language.boolean.zap", "constant.language.null.zap"],
+      "name": "Boolean and null constants",
+      "scope": [
+        "constant.language.boolean.zap",
+        "constant.language.null.zap",
+        "constant.language.true.zap",
+        "constant.language.false.zap"
+      ],
       "settings": { "foreground": "#ff7b72" }
     },
     {
@@ -51,12 +95,31 @@
       "settings": { "foreground": "#8b949e", "fontStyle": "italic" }
     },
     {
-      "name": "Operators",
-      "scope": ["keyword.operator.zap"],
+      "name": "Arithmetic operators",
+      "scope": ["keyword.operator.arithmetic.zap"],
+      "settings": { "foreground": "#f5a623" }
+    },
+    {
+      "name": "Comparison / logical operators",
+      "scope": [
+        "keyword.operator.comparison.zap",
+        "keyword.operator.logical.zap",
+        "keyword.operator.assignment.zap",
+        "keyword.operator.zap"
+      ],
       "settings": { "foreground": "#ff7b72" }
     },
     {
-      "name": "HTTP methods",
+      "name": "Punctuation (braces, parens, commas)",
+      "scope": [
+        "punctuation.zap",
+        "punctuation.definition.block.zap",
+        "punctuation.separator.zap"
+      ],
+      "settings": { "foreground": "#c9d1d9" }
+    },
+    {
+      "name": "HTTP methods (get, post, put, delete, patch)",
       "scope": ["keyword.other.http-method.zap", "keyword.other.server.zap"],
       "settings": { "foreground": "#3fb950", "fontStyle": "bold" }
     },
@@ -64,6 +127,16 @@
       "name": "Route strings",
       "scope": ["string.quoted.route.zap"],
       "settings": { "foreground": "#a5d6ff", "fontStyle": "underline" }
+    },
+    {
+      "name": "Object keys / property access",
+      "scope": ["variable.other.property.zap", "support.variable.property.zap"],
+      "settings": { "foreground": "#79c0ff" }
+    },
+    {
+      "name": "Type annotations (future)",
+      "scope": ["storage.type.annotation.zap"],
+      "settings": { "foreground": "#d2a8ff", "fontStyle": "italic" }
     }
   ]
 }

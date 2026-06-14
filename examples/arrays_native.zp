@@ -1,0 +1,78 @@
+// Zap Native Arrays Demo ⚡
+// Run: zap build arrays_native.zp --native
+
+// Basic array creation
+let nums = [10, 20, 30, 40, 50]
+let words = ["hello", "zap", "world"]
+
+// Print whole array
+print(nums)
+print(words)
+
+// Array length via .len()
+print(nums.len())
+
+// Array indexing
+print(nums[0])
+print(nums[4])
+
+// Push and pop
+nums.push(60)
+print(nums)
+print(nums.len())
+
+let popped = nums.pop()
+print(popped)
+print(nums)
+
+// Reverse
+let rev = nums.reverse()
+print(rev)
+
+// Sort numbers
+let unsorted = [5, 2, 8, 1, 9, 3]
+let sorted = unsorted.sort()
+print(sorted)
+
+// Sort strings
+let names = ["charlie", "alice", "bob"]
+let sortedNames = names.sort()
+print(sortedNames)
+
+// includes / indexOf
+print(nums.includes(30))
+print(nums.includes(999))
+print(nums.indexOf(30))
+
+// join
+let csv = nums.join(",")
+print(csv)
+
+let sentence = words.join(" ")
+print(sentence)
+
+// slice
+let slice = nums.slice(1, 4)
+print(slice)
+
+// Range helper
+let r = range(1, 6)
+print(r)
+
+// Loop over array with range
+loop i from 0 to nums.len() step 1 {
+  print(nums[i])
+}
+
+// Fibonacci stored in array
+fn buildFib(n) {
+  let result = [0, 1]
+  loop i from 2 to n step 1 {
+    let next = result[i - 1] + result[i - 2]
+    result.push(next)
+  }
+  return result.len()
+}
+
+let fibCount = buildFib(10)
+print(fibCount)
