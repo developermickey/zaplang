@@ -1,0 +1,118 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Zap",
+  "scopeName": "source.zap",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#functions" },
+    { "include": "#annotations" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.zap",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.zap",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.zap",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.zap",
+              "match": "\\\\[\\\\\"nrt0]"
+            },
+            {
+              "name": "constant.other.placeholder.zap",
+              "match": "\\{[A-Za-z_][A-Za-z0-9_\\.]*\\}"
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.zap",
+          "match": "\\b[0-9]+\\.[0-9]+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.zap",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.zap",
+          "match": "\\b(if|else|while|for|loop|match|return|try|catch|guard|break|continue|await|async|using)\\b"
+        },
+        {
+          "name": "keyword.declaration.zap",
+          "match": "\\b(package|use|fn|let|const|struct|class|interface|enum|model|component|page|api|route|store|auth|middleware|pub|private)\\b"
+        },
+        {
+          "name": "constant.language.boolean.zap",
+          "match": "\\b(true|false|none|some|ok|err)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.primitive.zap",
+          "match": "\\b(Bool|Int|Int8|Int16|Int32|Int64|UInt|UInt8|UInt16|UInt32|UInt64|Float32|Float64|Char|String|Bytes|Void|Never)\\b"
+        },
+        {
+          "name": "entity.name.type.zap",
+          "match": "\\b[A-Z][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.zap",
+          "match": "(?<=\\bfn\\s+)[A-Za-z_][A-Za-z0-9_]*"
+        },
+        {
+          "name": "support.function.builtin.zap",
+          "match": "\\b(print|len|json|parse|env|status)\\b(?=\\s*\\()"
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "name": "storage.modifier.attribute.zap",
+          "match": "@[A-Za-z_][A-Za-z0-9_]*"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.zap",
+          "match": "->|=>|==|!=|<=|>=|&&|\\|\\||[+\\-*/%=<>!?:.]"
+        }
+      ]
+    }
+  }
+}
+

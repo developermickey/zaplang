@@ -1,0 +1,39 @@
+{
+  "name": "zap-language-support",
+  "displayName": "Zap Language Support",
+  "description": "Syntax highlighting, language configuration, and file icons for Zap.",
+  "version": "0.1.0",
+  "publisher": "murphtech",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "zap",
+        "aliases": ["Zap", "zap"],
+        "extensions": [".zap", ".zp"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "zap",
+        "scopeName": "source.zap",
+        "path": "./syntaxes/zap.tmLanguage.json"
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "zap-icons",
+        "label": "Zap Icons",
+        "path": "./zap-icon-theme.json"
+      }
+    ]
+  }
+}
+
