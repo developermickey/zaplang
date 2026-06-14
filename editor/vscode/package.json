@@ -2,7 +2,7 @@
   "name": "zap-language-support",
   "displayName": "⚡ Zap Language",
   "description": "Syntax highlighting, code snippets, auto-complete, and file icons for the Zap programming language (.zap / .zp)",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "murphtech",
   "author": {
     "name": "Mukesh Pathak",
