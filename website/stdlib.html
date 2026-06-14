@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Standard Library — Zap Language</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/zap.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <img src="../assets/icons/zap.svg" width="32" height="32" alt="Zap" />
+        <span>Zap</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="examples.html">Examples</a></li>
+        <li><a href="stdlib.html" style="color:#e6edf3">Stdlib</a></li>
+        <li><a href="https://github.com/developermickey/zaplang" target="_blank">GitHub</a></li>
+        <li><a href="https://www.npmjs.com/package/zap-language" target="_blank" class="btn-nav">npm</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <h1>Standard Library</h1>
+    <p>8 built-in modules — batteries included. Import with <code>import x from "zap:x"</code></p>
+  </div>
+
+  <div class="page-body">
+    <aside class="sidebar">
+      <h4>Modules</h4>
+      <a href="#fs">zap:fs</a>
+      <a href="#http">zap:http</a>
+      <a href="#os">zap:os</a>
+      <a href="#math">zap:math</a>
+      <a href="#time">zap:time</a>
+      <a href="#crypto">zap:crypto</a>
+      <a href="#str">zap:str</a>
+      <a href="#arr">zap:arr</a>
+    </aside>
+
+    <div class="doc-content">
+
+      <h2 id="fs">zap:fs — File System</h2>
+      <pre><code><span class="kw">import</span> fs <span class="kw">from</span> <span class="s">"zap:fs"</span></code></pre>
+      <table style="width:100%;border-collapse:collapse;font-size:0.875rem;margin-bottom:24px">
+        <thead><tr style="border-bottom:1px solid #30363d;text-align:left">
+          <th style="padding:8px 12px;color:#8b949e">Function</th>
+          <th style="padding:8px 12px;color:#8b949e">Description</th>
+        </tr></thead>
+        <tbody style="color:#8b949e">
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.readFile(path)</code></td><td style="padding:8px 12px">Read file as string</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.writeFile(path, data)</code></td><td style="padding:8px 12px">Write string to file</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.readJSON(path)</code></td><td style="padding:8px 12px">Read and parse JSON file</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.writeJSON(path, obj)</code></td><td style="padding:8px 12px">Stringify and write JSON</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.readLines(path)</code></td><td style="padding:8px 12px">Read file as array of lines</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.exists(path)</code></td><td style="padding:8px 12px">Check if file/dir exists</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.mkdir(path)</code></td><td style="padding:8px 12px">Create directory</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.listDir(path)</code></td><td style="padding:8px 12px">List files in directory</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.deleteFile(path)</code></td><td style="padding:8px 12px">Delete a file</td></tr>
+          <tr style="border-bottom:1px solid #21262d"><td style="padding:8px 12px"><code>fs.copyFile(src, dst)</code></td><td style="padding:8px 12px">Copy a file</td></tr>
+          <tr><td style="padding:8px 12px"><code>fs.join(...parts)</code></td><td style="padding:8px 12px">Join path segments</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="http">zap:http — HTTP Client</h2>
+      <pre><code><span class="kw">import</span> http <span class="kw">from</span> <span class="s">"zap:http"</span>
+
+<span class="kw">let</span> <span class="v">res</span> = http.get(<span class="s">"https://api.example.com/data"</span>)
+<span class="fn">print</span>(res.body)
+
+<span class="kw">let</span> <span class="v">post</span> = http.post(<span class="s">"https://api.example.com/users"</span>, {
+  name: <span class="s">"Mukesh"</span>, role: <span class="s">"admin"</span>
+})</code></pre>
+
+      <h2 id="os">zap:os — Operating System</h2>
+      <pre><code><span class="kw">import</span> os <span class="kw">from</span> <span class="s">"zap:os"</span>
+
+<span class="fn">print</span>(os.platform())   <span class="c">// darwin | linux | win32</span>
+<span class="fn">print</span>(os.hostname())
+<span class="fn">print</span>(os.homedir())
+<span class="fn">print</span>(os.freeMem())    <span class="c">// MB</span>
+<span class="fn">print</span>(os.cpuCount())
+<span class="fn">print</span>(os.env(<span class="s">"PATH"</span>))
+<span class="kw">let</span> <span class="v">out</span> = os.exec(<span class="s">"ls -la"</span>)</code></pre>
+
+      <h2 id="math">zap:math — Mathematics</h2>
+      <pre><code><span class="kw">import</span> math <span class="kw">from</span> <span class="s">"zap:math"</span>
+
+<span class="fn">print</span>(math.PI)
+<span class="fn">print</span>(math.sqrt(<span class="n">144</span>))      <span class="c">// 12</span>
+<span class="fn">print</span>(math.pow(<span class="n">2</span>, <span class="n">10</span>))     <span class="c">// 1024</span>
+<span class="fn">print</span>(math.floor(<span class="n">3.7</span>))     <span class="c">// 3</span>
+<span class="fn">print</span>(math.clamp(<span class="n">15</span>, <span class="n">0</span>, <span class="n">10</span>)) <span class="c">// 10</span>
+<span class="fn">print</span>(math.randomInt(<span class="n">1</span>, <span class="n">100</span>))
+<span class="fn">print</span>(math.isPrime(<span class="n">17</span>))    <span class="c">// true</span>
+<span class="fn">print</span>(math.factorial(<span class="n">5</span>))   <span class="c">// 120</span></code></pre>
+
+      <h2 id="time">zap:time — Date & Time</h2>
+      <pre><code><span class="kw">import</span> time <span class="kw">from</span> <span class="s">"zap:time"</span>
+
+<span class="fn">print</span>(time.now())           <span class="c">// Unix ms</span>
+<span class="fn">print</span>(time.date())          <span class="c">// ISO string</span>
+<span class="fn">print</span>(time.dateLocal())
+<span class="fn">print</span>(time.year())
+<span class="fn">print</span>(time.format(time.now(), <span class="s">"YYYY-MM-DD"</span>))
+<span class="kw">let</span> <span class="v">start</span> = time.now()
+<span class="c">// ... do work ...</span>
+<span class="fn">print</span>(time.since(start))   <span class="c">// ms elapsed</span></code></pre>
+
+      <h2 id="crypto">zap:crypto — Security</h2>
+      <pre><code><span class="kw">import</span> crypto <span class="kw">from</span> <span class="s">"zap:crypto"</span>
+
+<span class="fn">print</span>(crypto.uuid())
+<span class="fn">print</span>(crypto.sha256(<span class="s">"password"</span>))
+<span class="fn">print</span>(crypto.sha512(<span class="s">"data"</span>))
+<span class="fn">print</span>(crypto.randomToken(<span class="n">32</span>))
+<span class="fn">print</span>(crypto.hmac(<span class="s">"secret"</span>, <span class="s">"message"</span>))
+<span class="fn">print</span>(crypto.base64Encode(<span class="s">"Hello"</span>))
+<span class="fn">print</span>(crypto.base64Decode(<span class="s">"SGVsbG8="</span>))
+<span class="fn">print</span>(crypto.safeEqual(hash1, hash2))</code></pre>
+
+      <h2 id="str">zap:str — String Utilities</h2>
+      <pre><code><span class="kw">import</span> str <span class="kw">from</span> <span class="s">"zap:str"</span>
+
+<span class="fn">print</span>(str.upper(<span class="s">"hello"</span>))           <span class="c">// HELLO</span>
+<span class="fn">print</span>(str.camelCase(<span class="s">"hello world"</span>)) <span class="c">// helloWorld</span>
+<span class="fn">print</span>(str.snakeCase(<span class="s">"HelloWorld"</span>))  <span class="c">// hello_world</span>
+<span class="fn">print</span>(str.isEmail(<span class="s">"a@b.com"</span>))       <span class="c">// true</span>
+<span class="fn">print</span>(str.words(<span class="s">"hello world"</span>))     <span class="c">// ["hello","world"]</span>
+<span class="fn">print</span>(str.repeat(<span class="s">"ab"</span>, <span class="n">3</span>))         <span class="c">// ababab</span></code></pre>
+
+      <h2 id="arr">zap:arr — Array Utilities</h2>
+      <pre><code><span class="kw">import</span> arr <span class="kw">from</span> <span class="s">"zap:arr"</span>
+
+<span class="kw">let</span> <span class="v">nums</span> = [<span class="n">3</span>, <span class="n">1</span>, <span class="n">4</span>, <span class="n">1</span>, <span class="n">5</span>, <span class="n">9</span>]
+
+<span class="fn">print</span>(arr.sum(nums))           <span class="c">// 23</span>
+<span class="fn">print</span>(arr.avg(nums))           <span class="c">// 3.83</span>
+<span class="fn">print</span>(arr.min(nums))           <span class="c">// 1</span>
+<span class="fn">print</span>(arr.max(nums))           <span class="c">// 9</span>
+<span class="fn">print</span>(arr.unique(nums))        <span class="c">// [3,1,4,5,9]</span>
+<span class="fn">print</span>(arr.shuffle(nums))
+<span class="fn">print</span>(arr.chunk(nums, <span class="n">2</span>))     <span class="c">// [[3,1],[4,1],[5,9]]</span>
+<span class="fn">print</span>(arr.sample(nums, <span class="n">3</span>))    <span class="c">// 3 random items</span></code></pre>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="../assets/icons/zap.svg" width="28" height="28" alt="Zap" />
+        <span>Zap Language</span>
+      </div>
+      <p>Created by <a href="https://github.com/developermickey" target="_blank">Mukesh Pathak</a> · MurphTech Software Solutions</p>
+      <div class="footer-links">
+        <a href="https://github.com/developermickey/zaplang" target="_blank">GitHub</a>
+        <a href="https://www.npmjs.com/package/zap-language" target="_blank">npm</a>
+        <a href="docs.html">Docs</a>
+        <a href="stdlib.html">Stdlib</a>
+      </div>
+      <p class="footer-copy">MIT License · © 2024 Mukesh Pathak</p>
+    </div>
+  </footer>
+</body>
+</html>

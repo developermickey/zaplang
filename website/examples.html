@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples — Zap Language</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/zap.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <img src="../assets/icons/zap.svg" width="32" height="32" alt="Zap" />
+        <span>Zap</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="docs.html">Docs</a></li>
+        <li><a href="examples.html" style="color:#e6edf3">Examples</a></li>
+        <li><a href="stdlib.html">Stdlib</a></li>
+        <li><a href="https://github.com/developermickey/zaplang" target="_blank">GitHub</a></li>
+        <li><a href="https://www.npmjs.com/package/zap-language" target="_blank" class="btn-nav">npm</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <h1>Examples</h1>
+    <p>Real Zap programs you can copy, run, and build on.</p>
+  </div>
+
+  <div style="max-width:860px;margin:0 auto;padding:48px 24px 80px">
+
+    <div class="doc-content">
+
+      <h2 id="hello">Hello World</h2>
+      <pre><code><span class="kw">let</span> <span class="v">name</span> = <span class="s">"World"</span>
+<span class="fn">print</span>(<span class="t">`Hello, {name}!`</span>)
+
+<span class="kw">fn</span> <span class="fn">greet</span>(person) {
+  <span class="kw">return</span> <span class="t">`Welcome, {person}!`</span>
+}
+
+<span class="fn">print</span>(<span class="fn">greet</span>(<span class="s">"Mukesh"</span>))</code></pre>
+      <div class="run-cmd">$ zap run hello.zap</div>
+
+      <h2 id="fibonacci">Fibonacci</h2>
+      <pre><code><span class="kw">fn</span> <span class="fn">fibonacci</span>(n) {
+  <span class="kw">if</span> (n <= <span class="n">1</span>) { <span class="kw">return</span> n }
+  <span class="kw">return</span> <span class="fn">fibonacci</span>(n - <span class="n">1</span>) + <span class="fn">fibonacci</span>(n - <span class="n">2</span>)
+}
+
+<span class="kw">loop</span> <span class="v">i</span> <span class="kw">from</span> <span class="n">0</span> <span class="kw">to</span> <span class="n">10</span> {
+  <span class="fn">print</span>(<span class="fn">fibonacci</span>(i))
+}</code></pre>
+      <div class="run-cmd">$ zap build fibonacci.zap --native -o fib && ./fib</div>
+
+      <h2 id="arrays">Working with Arrays</h2>
+      <pre><code><span class="kw">let</span> <span class="v">scores</span> = [<span class="n">85</span>, <span class="n">92</span>, <span class="n">78</span>, <span class="n">96</span>, <span class="n">88</span>]
+
+<span class="c">// Sort and reverse</span>
+<span class="fn">print</span>(scores.sort())
+<span class="fn">print</span>(scores.reverse())
+
+<span class="c">// Find stats</span>
+<span class="kw">let</span> <span class="v">total</span> = <span class="n">0</span>
+<span class="kw">loop</span> <span class="v">i</span> <span class="kw">from</span> <span class="n">0</span> <span class="kw">to</span> scores.len() {
+  total += scores[i]
+}
+<span class="kw">let</span> <span class="v">avg</span> = total / scores.len()
+<span class="fn">print</span>(<span class="t">`Average: {avg}`</span>)
+
+<span class="c">// Filter above 90</span>
+<span class="kw">let</span> <span class="v">high</span> = []
+<span class="kw">loop</span> <span class="v">i</span> <span class="kw">from</span> <span class="n">0</span> <span class="kw">to</span> scores.len() {
+  <span class="kw">if</span> (scores[i] > <span class="n">90</span>) { high.push(scores[i]) }
+}
+<span class="fn">print</span>(high.join(<span class="s">", "</span>))</code></pre>
+      <div class="run-cmd">$ zap run arrays.zap</div>
+
+      <h2 id="server">Web Server</h2>
+      <pre><code><span class="kw">import</span> time <span class="kw">from</span> <span class="s">"zap:time"</span>
+
+<span class="kw">server</span> <span class="kw">on</span> <span class="n">3000</span> {
+
+  <span class="kw">get</span> <span class="s">"/"</span> {
+    <span class="kw">return</span> {
+      message: <span class="s">"Welcome to Zap API!"</span>,
+      time: time.dateLocal()
+    }
+  }
+
+  <span class="kw">get</span> <span class="s">"/greet/:name"</span> {
+    <span class="kw">let</span> <span class="v">name</span> = req.params.name
+    <span class="kw">return</span> { greeting: <span class="t">`Hello, {name}!`</span> }
+  }
+
+  <span class="kw">post</span> <span class="s">"/api/echo"</span> {
+    <span class="kw">return</span> { received: req.body }
+  }
+
+}</code></pre>
+      <div class="run-cmd">$ zap run server.zap<br/>→ Server running at http://localhost:3000</div>
+
+      <h2 id="files">File Operations</h2>
+      <pre><code><span class="kw">import</span> fs <span class="kw">from</span> <span class="s">"zap:fs"</span>
+
+<span class="c">// Write a file</span>
+fs.writeFile(<span class="s">"output.txt"</span>, <span class="s">"Hello from Zap!\n"</span>)
+
+<span class="c">// Read it back</span>
+<span class="kw">let</span> <span class="v">content</span> = fs.readFile(<span class="s">"output.txt"</span>)
+<span class="fn">print</span>(content)
+
+<span class="c">// JSON</span>
+<span class="kw">let</span> <span class="v">data</span> = { name: <span class="s">"Zap"</span>, version: <span class="n">1</span> }
+fs.writeJSON(<span class="s">"config.json"</span>, data)
+<span class="kw">let</span> <span class="v">loaded</span> = fs.readJSON(<span class="s">"config.json"</span>)
+<span class="fn">print</span>(loaded.name)</code></pre>
+      <div class="run-cmd">$ zap run files.zap</div>
+
+      <h2 id="crypto">Crypto & Security</h2>
+      <pre><code><span class="kw">import</span> crypto <span class="kw">from</span> <span class="s">"zap:crypto"</span>
+
+<span class="c">// Generate UUID</span>
+<span class="fn">print</span>(crypto.uuid())
+
+<span class="c">// Hash a password</span>
+<span class="kw">let</span> <span class="v">hash</span> = crypto.sha256(<span class="s">"mypassword"</span>)
+<span class="fn">print</span>(hash)
+
+<span class="c">// Random secure token</span>
+<span class="kw">let</span> <span class="v">token</span> = crypto.randomToken(<span class="n">32</span>)
+<span class="fn">print</span>(token)
+
+<span class="c">// Base64</span>
+<span class="kw">let</span> <span class="v">encoded</span> = crypto.base64Encode(<span class="s">"Hello Zap"</span>)
+<span class="fn">print</span>(crypto.base64Decode(encoded))</code></pre>
+      <div class="run-cmd">$ zap run crypto.zap</div>
+
+      <h2 id="native-primes">Native — Prime Numbers</h2>
+      <pre><code><span class="c">// Runs as a native binary — no Node.js needed</span>
+<span class="kw">fn</span> <span class="fn">isPrime</span>(n) {
+  <span class="kw">if</span> (n < <span class="n">2</span>) { <span class="kw">return</span> <span class="b">false</span> }
+  <span class="kw">loop</span> <span class="v">i</span> <span class="kw">from</span> <span class="n">2</span> <span class="kw">to</span> n {
+    <span class="kw">if</span> (n % i == <span class="n">0</span>) { <span class="kw">return</span> <span class="b">false</span> }
+  }
+  <span class="kw">return</span> <span class="b">true</span>
+}
+
+<span class="kw">let</span> <span class="v">count</span> = <span class="n">0</span>
+<span class="kw">loop</span> <span class="v">n</span> <span class="kw">from</span> <span class="n">2</span> <span class="kw">to</span> <span class="n">100</span> {
+  <span class="kw">if</span> (<span class="fn">isPrime</span>(n)) {
+    <span class="fn">print</span>(n)
+    count++
+  }
+}
+<span class="fn">print</span>(<span class="t">`Found {count} primes`</span>)</code></pre>
+      <div class="run-cmd">$ zap build primes.zp --native -o primes && ./primes</div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="../assets/icons/zap.svg" width="28" height="28" alt="Zap" />
+        <span>Zap Language</span>
+      </div>
+      <p>Created by <a href="https://github.com/developermickey" target="_blank">Mukesh Pathak</a> · MurphTech Software Solutions</p>
+      <div class="footer-links">
+        <a href="https://github.com/developermickey/zaplang" target="_blank">GitHub</a>
+        <a href="https://www.npmjs.com/package/zap-language" target="_blank">npm</a>
+        <a href="docs.html">Docs</a>
+        <a href="examples.html">Examples</a>
+      </div>
+      <p class="footer-copy">MIT License · © 2024 Mukesh Pathak</p>
+    </div>
+  </footer>
+</body>
+</html>
